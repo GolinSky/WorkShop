@@ -4,7 +4,7 @@ using WorkShop.LightWeightFramework.Service;
 
 namespace WorkShop.Services.Player
 {
-    public interface IInputService
+    public interface IInputService:IService
     {
         Vector2 UserInput { get; }
 

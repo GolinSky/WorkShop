@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using LightWeightFramework.Controller;
 using LightWeightFramework.Model;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Factory;
@@ -14,12 +16,14 @@ namespace WorkShop.LightWeightFramework.Game
         IFeatureFactory Factory { get; }
         IServiceHub ServiceHub { get; }
         IModelHub ModelHub { get; }
+        
     }
 
     public interface IGame : IGameObserver
     {
         void LoadLevel(IGameLevelData levelData);
         void Release();
+        void Update();
     }
 
     public class Game : IGame
@@ -30,7 +34,7 @@ namespace WorkShop.LightWeightFramework.Game
         private readonly IModelHub modelHub;
         private IEnumerable<IController> controllers;
         private List<IView> views = new List<IView>();
-
+        private TickService tickService;//move to some default service context
         IFeatureFactory IGameObserver.Factory => factory;
         IServiceHub IGameObserver.ServiceHub => serviceHub;
         IModelHub IGameObserver.ModelHub => modelHub;
@@ -40,7 +44,11 @@ namespace WorkShop.LightWeightFramework.Game
             modelHub = new ModelHub();
             this.factory = factory;
             this.gameContext = gameContext;
-            serviceHub = new ServiceHub(gameContext.Services);
+            
+            tickService = new TickService();
+            var services = gameContext.Services.ToList();
+            services.Add(tickService);
+            serviceHub = new ServiceHub(services);
         }
 
         void IGame.LoadLevel(IGameLevelData levelData)
@@ -77,6 +85,11 @@ namespace WorkShop.LightWeightFramework.Game
             {
                 view.Release();
             }
+        }
+
+        void IGame.Update()
+        {
+            tickService.Update(Time.deltaTime);
         }
     }
 }

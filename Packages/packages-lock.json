@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.pancake.patterns": {
+      "version": "https://github.com/GolinSky/PatternsTemplateProject.git?path=/Assets",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "135cbfb47b811a805aa21d97ad51d046723ba974"
+    },
     "com.unity.collab-proxy": {
       "version": "2.0.5",
       "depth": 0,

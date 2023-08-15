@@ -9,12 +9,13 @@ using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Repository;
 using WorkShop.LightWeightFramework.Service;
 using WorkShop.Models;
+using WorkShop.Services.Player;
 
 namespace WorkShop.Launcher
 {
     public class MyGameContext : IGameContext
     {
-        public IService[] Services { get; }
+        public IService[] Services => new IService[] { new InputService() };
     }
 
     //test not system temp solution
@@ -54,6 +55,11 @@ namespace WorkShop.Launcher
         private void OnDestroy()
         {
             Game.Release();
+        }
+
+        private void Update()
+        {
+            Game.Update();
         }
     }
 }
