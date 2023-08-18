@@ -50,9 +50,11 @@ namespace WorkShop.Controllers
         public void Notify(float deltaTime)
         {
             Model.Grounded = groundedProvider.IsGrounded;
+            Debug.Log($"Model.Grounded:{Model.Grounded}");
             if (!groundedProvider.IsGrounded)
             {
                 moveComponent.Move(deltaTime, gravityDirection);
+                animationComponent.Update(gravityDirection);
                 return; 
             }
                

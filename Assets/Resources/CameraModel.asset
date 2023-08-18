@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b279211853203f42986a299a5729e60, type: 3}
   m_Name: CameraModel
   m_EditorClassIdentifier: 
-  <YMin>k__BackingField: -50
-  <YMax>k__BackingField: 50
-  <Sensitivity>k__BackingField: 10
-  <Distance>k__BackingField: {x: 0, y: 2, z: -5}
+  <YMin>k__BackingField: -30
+  <YMax>k__BackingField: 30
+  <Sensitivity>k__BackingField: 100
+  <Distance>k__BackingField: {x: 0, y: 3, z: -3}
   <Speed>k__BackingField: 0

@@ -25,6 +25,7 @@ namespace WorkShop.Components.Controller
         public void Update(Vector3 direction)
         {
             model.PureDirection = direction;
+            Debug.Log($"AnimationModel:{model.Grounded}");
         }
     }
 }

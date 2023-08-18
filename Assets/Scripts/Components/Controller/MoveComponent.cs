@@ -30,7 +30,7 @@ namespace WorkShop.Components.Controller
         {
           //  model.PureDirection = direction;
           //  direction *= deltaTime;
-            position += direction * model.Speed *deltaTime;//todo:use values from model - like speed and etc...
+            position += direction * model.Speed * deltaTime;//todo:use values from model - like speed and etc...
             model.UpdatePosition(position, direction);
         }
 
