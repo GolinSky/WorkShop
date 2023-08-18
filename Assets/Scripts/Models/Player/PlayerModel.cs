@@ -6,7 +6,7 @@ using WorkShop.Models.TransformModels;
 
 namespace WorkShop.Models
 {
-    public interface IPlayerModelObserver:IModelObserver, IAnimationModelObserver, ITransformModelObserver
+    public interface IPlayerModelObserver:IModelObserver, IAnimationModel, ITransformModel
     {
    
     }
@@ -22,8 +22,9 @@ namespace WorkShop.Models
         public Vector3 Direction { get; private set; }
 
         public Vector3 PureDirection { get;  set;}
+        public bool Grounded { get; set; }
 
-        
+
         public void UpdatePosition(Vector3 position, Vector3 direction)
         {
             Position = position;

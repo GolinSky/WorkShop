@@ -59,6 +59,9 @@ namespace WorkShop.LightWeightFramework.Views
         void ICommandInvoker.SetCommand(ICommand command)
         {
             Command = (TCommand)command;
+            OnCommandSet(Command);
         }
+
+        protected abstract void OnCommandSet(TCommand command);
     }
 }

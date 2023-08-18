@@ -8,9 +8,9 @@ namespace WorkShop.Components.Controller
 {
     public class AnimationComponent:Component
     {
-        private readonly IAnimationModelObserver model;
+        private readonly IAnimationModel model;
 
-        public AnimationComponent(IAnimationModelObserver model)
+        public AnimationComponent(IAnimationModel model)
         {
             this.model = model;
         }

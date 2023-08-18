@@ -1,14 +1,17 @@
 using UnityEngine;
 using WorkShop.LightWeightFramework.ViewComponents;
 using WorkShop.Models.TransformModels;
+using WorkShop.MonoProviders;
 
 namespace WorkShop.ViewComponents.Movement
 {
-    public abstract class BaseMovementViewComponent<TComponent>:ViewComponent<ITransformModelObserver>
+    public abstract class BaseMovementViewComponent<TComponent>:ViewComponent<ITransformModelObserver>, IGroundedProvider
         where TComponent:Component
     {
         [SerializeField] protected TComponent target;
-        
+     
+        public abstract bool IsGrounded { get; }
+
         protected override void OnInit()
         {
             base.OnInit();

@@ -9,6 +9,7 @@ namespace WorkShop.View
     {
         protected override void OnInit(ICameraModelObserver model)
         {
+            
             Model.OnPositionChanged += ModelOnOnPositionChanged;
         }
 

@@ -12,23 +12,17 @@ namespace WorkShop.Controllers.Camera
     public class CameraController : Controller<CameraModel>, ITick
     {
         private IPlayerService playerService;
+        private IInputService inputService;
+        
         private MoveComponent moveComponent;
-        private Vector3 _prevMousePos;
+        private Vector3 prevMousePos;
         private Vector3 cameraPosition;
         
-        
-        private const float YMin = -50.0f;
-        private const float YMax = 50.0f;
-
-
-
         private float currentX = 0.0f;
         private float currentY = 0.0f;
-        public float sensivity = 4.0f;
+        private float prevDistance;
 
-        float prevDistance;
 
-        
         public override string Id => "Camera";
 
         public CameraController(CameraModel model) : base(model)
@@ -49,29 +43,18 @@ namespace WorkShop.Controllers.Camera
             base.OnInit();
             playerService = GetService<IPlayerService>();
             moveComponent = GetComponent<MoveComponent>();
-
-        }
-
-        protected override void OnRelease()
-        {
-            base.OnRelease();
+            inputService = GameObserver.ServiceHub.Get<IInputService>();
         }
         
         public void Notify(float state)
         {
             cameraPosition = playerService.PlayerPosition;//+ ;
-            
-            
-            currentX += Input.GetAxis("Mouse X") * sensivity * state;
-            currentY += Input.GetAxis("Mouse Y") * sensivity * state;
-
-            currentY = Mathf.Clamp(currentY, YMin, YMax);
-
+            currentX += inputService.MouseAxisInput.x * Model.Sensitivity * state;
+            currentY += inputService.MouseAxisInput.y * Model.Sensitivity * state;
+            currentY = Mathf.Clamp(currentY, Model.YMin, Model.YMax);
             Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
             cameraPosition += rotation * Model.Distance;
-
             Model.LookAtPosition = playerService.PlayerPosition;
-            
             moveComponent.SetPosition(cameraPosition, Vector3.zero);
         }
     }

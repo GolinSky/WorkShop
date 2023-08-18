@@ -1,4 +1,5 @@
 using LightWeightFramework.Controller;
+using WorkShop.LightWeightFramework.Game;
 
 namespace WorkShop.LightWeightFramework.Command
 {
@@ -8,16 +9,19 @@ namespace WorkShop.LightWeightFramework.Command
         {
             
         }
+        
     }
     
     public abstract class Command<TController>:Command
         where TController:IController
     {
         protected TController Controller { get; }
-        
-        protected Command(TController controller):base(controller)
+        protected IGameObserver GameObserver { get; }
+
+        protected Command(TController controller, IGameObserver gameObserver):base(controller)
         {
             Controller = controller;
+            GameObserver = gameObserver;
         }
     }
 }

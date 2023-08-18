@@ -35,6 +35,7 @@ namespace WorkShop.LightWeightFramework.Game
         private IEnumerable<IController> controllers;
         private List<IView> views = new List<IView>();
         private TickService tickService;//move to some default service context
+        private readonly List<IService> services;
         IFeatureFactory IGameObserver.Factory => factory;
         IServiceHub IGameObserver.ServiceHub => serviceHub;
         IModelHub IGameObserver.ModelHub => modelHub;
@@ -46,17 +47,23 @@ namespace WorkShop.LightWeightFramework.Game
             this.gameContext = gameContext;
             
             tickService = new TickService();
-            var services = gameContext.Services.ToList();
+            services = gameContext.Services.ToList();
             services.Add(tickService);
             serviceHub = new ServiceHub(services);
         }
 
         void IGame.LoadLevel(IGameLevelData levelData)
         {
-            if (SceneManager.GetActiveScene().buildIndex != levelData.SceneIndex) 
+            // if (SceneManager.GetActiveScene().buildIndex != levelData.SceneIndex) 
+            // {
+            //     SceneManager.LoadScene(levelData.SceneIndex); //move to lvl service
+            // } 
+            
+            foreach (var service in services)
             {
-                SceneManager.LoadScene(levelData.SceneIndex); //move to lvl service
-            } 
+                service.Init(this);
+            }
+            
             controllers = levelData.GetEntities(this);
             foreach (var entity in controllers)
             {
@@ -76,6 +83,11 @@ namespace WorkShop.LightWeightFramework.Game
 
         void IGame.Release()
         {
+            foreach (var service in services)
+            {
+                service.Release();
+            }
+            
             foreach (var entity in controllers)
             {
                 entity.Release();

@@ -8,9 +8,9 @@ namespace WorkShop.Components.Controller
     public class MoveComponent:Component
     {
         private Vector3 position;
-        private readonly ITransformModelObserver model;
+        private readonly ITransformModel model;
 
-        public MoveComponent(ITransformModelObserver model)
+        public MoveComponent(ITransformModel model)
         {
             this.model = model;
         }
@@ -29,8 +29,8 @@ namespace WorkShop.Components.Controller
         public void Move(float deltaTime, Vector3 direction)
         {
           //  model.PureDirection = direction;
-            direction *= deltaTime;
-            position += direction * model.Speed;//todo:use values from model - like speed and etc...
+          //  direction *= deltaTime;
+            position += direction * model.Speed *deltaTime;//todo:use values from model - like speed and etc...
             model.UpdatePosition(position, direction);
         }
 

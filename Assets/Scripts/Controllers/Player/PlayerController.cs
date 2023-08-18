@@ -7,6 +7,7 @@ using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models;
+using WorkShop.MonoProviders;
 using WorkShop.Services.Player;
 
 namespace WorkShop.Controllers
@@ -16,11 +17,16 @@ namespace WorkShop.Controllers
         private MoveComponent moveComponent;
         private AnimationComponent animationComponent;
         private IInputService inputService;
+        private IGroundedProvider groundedProvider;
         private Vector3 direction;
+        private Vector3 gravityDirection;
 
         public override string Id => "Player";
 
-        public PlayerController(PlayerModel model) : base(model) {}
+        public PlayerController(PlayerModel model) : base(model)
+        {
+            gravityDirection.y = Physics.gravity.y;
+        }
 
        
         protected override void OnInit()
@@ -43,13 +49,19 @@ namespace WorkShop.Controllers
         
         public void Notify(float deltaTime)
         {
+            Model.Grounded = groundedProvider.IsGrounded;
+            if (!groundedProvider.IsGrounded)
+            {
+                moveComponent.Move(deltaTime, gravityDirection);
+                return; 
+            }
+               
+            
             direction.x = inputService.UserInput.x;
             direction.z = inputService.UserInput.y;
             direction.y = Physics.gravity.y;
-            
             moveComponent.Move(deltaTime, direction);
             animationComponent.Update(direction);
-
         }
 
         public override ICommand GetCommand()
@@ -57,6 +69,9 @@ namespace WorkShop.Controllers
             return new PlayerCommand(this, GameObserver);
         }
 
-   
+        public void RegisterGroundedProvider(IGroundedProvider groundedProvider)
+        {
+            this.groundedProvider = groundedProvider;
+        }
     }
 }
