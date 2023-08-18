@@ -1,5 +1,6 @@
 using LightWeightFramework.Controller;
 using LightWeightFramework.Model;
+using UnityEngine;
 
 namespace WorkShop.LightWeightFramework.Factory
 {
@@ -11,5 +12,8 @@ namespace WorkShop.LightWeightFramework.Factory
 
   
         Views.View CreateView(string entityId);
+
+        TModel CreateModel<TModel>(string entityId) where TModel :Object, IModel;
+     
     }
 }

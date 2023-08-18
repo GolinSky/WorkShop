@@ -10,6 +10,7 @@ namespace WorkShop.Models.TransformModels
 
         Vector3 Position { get; }
         Vector3 Direction { get; }
+        float Speed { get; }
 
         void UpdatePosition(Vector3 position, Vector3 direction);
     }

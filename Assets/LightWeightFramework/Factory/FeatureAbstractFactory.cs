@@ -24,9 +24,12 @@ namespace WorkShop.LightWeightFramework.Factory
 
         public Views.View CreateView(string entityId)
         {
-            return  Object.Instantiate(repository.Load<Views.View>(entityId));
+            return Object.Instantiate(repository.Load<Views.View>(entityId));
         }
 
-
+        public TModel CreateModel<TModel>(string entityId) where TModel : Object, IModel
+        {
+            return Object.Instantiate(repository.Load<TModel>(entityId));
+        }
     }
 }

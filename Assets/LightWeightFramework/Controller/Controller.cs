@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using LightWeightFramework.Model;
+using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.Game;
+using WorkShop.LightWeightFramework.Service;
 
 namespace LightWeightFramework.Controller
 {
@@ -12,6 +14,11 @@ namespace LightWeightFramework.Controller
 
         public virtual string Id => GetType().Name;
         protected TModel Model { get; private set; }
+        public virtual ICommand GetCommand()
+        {
+            throw new System.NotImplementedException();
+        }
+
         IModelObserver IController.Model => Model;
         protected IGameObserver GameObserver { get; private set; }
 
@@ -57,6 +64,11 @@ namespace LightWeightFramework.Controller
             }
 
             return default;
+        }
+
+        protected TService GetService<TService>() where TService:IService
+        {
+            return GameObserver.ServiceHub.Get<TService>();
         }
         
         protected virtual void OnInit(){}

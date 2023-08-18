@@ -8,8 +8,6 @@ namespace WorkShop.Components.Controller
 {
     public class AnimationComponent:Component
     {
-        private IInputService inputService;
-        private Vector3 direction;
         private readonly IAnimationModelObserver model;
 
         public AnimationComponent(IAnimationModelObserver model)
@@ -18,19 +16,14 @@ namespace WorkShop.Components.Controller
         }
         protected override void OnInit(IGameObserver gameObserver)
         {
-            inputService = GameObserver.ServiceHub.Get<IInputService>();
- 
         }
 
         protected override void OnRelease()
         {
         }
 
-        public void Update()
+        public void Update(Vector3 direction)
         {
-            direction.x = inputService.UserInput.x;
-            direction.z = inputService.UserInput.y;
-            direction.y = Physics.gravity.y;
             model.PureDirection = direction;
         }
     }

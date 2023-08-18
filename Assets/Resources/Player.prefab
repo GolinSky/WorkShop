@@ -1671,6 +1671,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3842853474216989325}
+  blendXName: Horizontal
+  blendYName: Vertical
 --- !u!114 &-1429021649771434787
 MonoBehaviour:
   m_ObjectHideFlags: 0

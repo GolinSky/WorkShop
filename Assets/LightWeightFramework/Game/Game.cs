@@ -41,7 +41,7 @@ namespace WorkShop.LightWeightFramework.Game
 
         public Game(IFeatureFactory factory, IGameContext gameContext)
         {
-            modelHub = new ModelHub();
+            modelHub = new ModelHub(factory);
             this.factory = factory;
             this.gameContext = gameContext;
             
@@ -68,7 +68,7 @@ namespace WorkShop.LightWeightFramework.Game
                     views.Add(view);
                     if (view is ICommandInvoker commandInvoker)
                     {
-                        commandInvoker.SetCommand(new CommandFactory().CreateCommand(entity));
+                        commandInvoker.SetCommand(entity.GetCommand());
                     }
                 }
             }
