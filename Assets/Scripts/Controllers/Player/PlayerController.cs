@@ -17,9 +17,9 @@ namespace WorkShop.Controllers
         private PlayerMoveComponent moveComponent;
         private AnimationComponent animationComponent;
         private IMovementProvider movementProvider;
+        private IInputModelObserver inputModel;
         private Vector3 direction;
         private float currentY;
-        private IInputModelObserver inputModel;
 
         public override string Id => "Player";
 
@@ -30,7 +30,7 @@ namespace WorkShop.Controllers
         protected override void OnBeforeComponentsInitialed()
         {
             base.OnBeforeComponentsInitialed();
-            inputModel = GameObserver.ModelHub.GetModel<InputModel>();
+            inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
         }
 
         protected override void OnInit()
