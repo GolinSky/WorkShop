@@ -7,7 +7,7 @@ namespace LightWeightFramework.Model
     public interface IModelHub
     {
         TModel GetModel<TModel>(string entityId) where TModel : Object, IModel;
-        TModel GetModel<TModel>() where TModel : Object, IModel;
+        TModel GetModel<TModel>() where TModel : IModelObserver;
     }
     
     public class ModelHub:IModelHub
@@ -36,7 +36,7 @@ namespace LightWeightFramework.Model
             return newModel;
         }
 
-        public TModel GetModel<TModel>() where TModel : Object, IModel
+        public TModel GetModel<TModel>() where TModel :  IModelObserver
         {
             foreach (var model in modelsList)
             {
