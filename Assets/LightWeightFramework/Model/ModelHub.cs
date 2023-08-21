@@ -7,6 +7,7 @@ namespace LightWeightFramework.Model
     public interface IModelHub
     {
         TModel GetModel<TModel>(string entityId) where TModel : Object, IModel;
+        TModel GetModel<TModel>() where TModel : Object, IModel;
     }
     
     public class ModelHub:IModelHub
@@ -33,6 +34,19 @@ namespace LightWeightFramework.Model
             var newModel = factory.CreateModel<TModel>(entityId);
             modelsList.Add(newModel);
             return newModel;
+        }
+
+        public TModel GetModel<TModel>() where TModel : Object, IModel
+        {
+            foreach (var model in modelsList)
+            {
+                if (model is TModel targetModel)
+                {
+                    return targetModel;
+                }
+            }
+
+            return default;
         }
     }
 }

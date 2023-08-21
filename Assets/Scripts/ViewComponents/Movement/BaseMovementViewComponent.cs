@@ -5,12 +5,14 @@ using WorkShop.MonoProviders;
 
 namespace WorkShop.ViewComponents.Movement
 {
-    public abstract class BaseMovementViewComponent<TComponent>:ViewComponent<ITransformModelObserver>, IGroundedProvider
+    public abstract class BaseMovementViewComponent<TComponent>:ViewComponent<ITransformModelObserver>, IMovementProvider
         where TComponent:Component
     {
         [SerializeField] protected TComponent target;
      
         public abstract bool IsGrounded { get; }
+        public abstract Vector3 Velocity { get; }
+        public virtual Transform Transform => transform;
 
         protected override void OnInit()
         {

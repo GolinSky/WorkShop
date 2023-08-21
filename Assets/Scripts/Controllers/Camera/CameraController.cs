@@ -33,7 +33,7 @@ namespace WorkShop.Controllers.Camera
         {
             var components = base.BuildsComponents();
             components.Add(new UpdateComponent(this));
-            components.Add(new MoveComponent(Model));
+            // components.Add(new MoveComponent(Model));
 
             return components;
         }
@@ -42,20 +42,20 @@ namespace WorkShop.Controllers.Camera
         {
             base.OnInit();
             playerService = GetService<IPlayerService>();
-            moveComponent = GetComponent<MoveComponent>();
+           // moveComponent = GetComponent<MoveComponent>();
             inputService = GameObserver.ServiceHub.Get<IInputService>();
         }
-        
-        public void Notify(float state)
+
+        public void Notify(float deltaTime)
         {
-            cameraPosition = playerService.PlayerPosition;//+ ;
-            currentX += inputService.MouseAxisInput.x * Model.Sensitivity * state;
-            currentY += inputService.MouseAxisInput.y * Model.Sensitivity * state;
-            currentY = Mathf.Clamp(currentY, Model.YMin, Model.YMax);
-            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-            cameraPosition += rotation * Model.Distance;
+            // cameraPosition = playerService.PlayerPosition; //+ ;
+            // currentX += inputService.MouseAxisInput.x * Model.Sensitivity * deltaTime;
+            // currentY += inputService.MouseAxisInput.y * Model.Sensitivity * deltaTime;
+            // currentY = Mathf.Clamp(currentY, Model.YMin, Model.YMax);
+            // Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
+            // cameraPosition += rotation * Model.Distance;
             Model.LookAtPosition = playerService.PlayerPosition;
-            moveComponent.SetPosition(cameraPosition, Vector3.zero);
+          //  moveComponent.SetPosition(cameraPosition, Vector3.zero);
         }
     }
 }

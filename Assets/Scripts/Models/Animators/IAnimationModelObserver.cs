@@ -1,17 +1,22 @@
-using LightWeightFramework.Model;
-using UnityEngine;
+using System;
 using WorkShop.Models.TransformModels;
 
 namespace WorkShop.Models.Animators
 {
-    public interface IAnimationModelObserver:ITransformModelObserver
+    public interface IAnimationModelObserver : ITransformModelObserver
     {
-        Vector3 PureDirection { get; }
+        float FallTimeout { get; }
+        float AnimationBlend { get; }
+        bool IsJumped { get; }
+        bool IsFall { get; }
+        event Action OnUpdateData;
     }
 
-    public interface IAnimationModel:IAnimationModelObserver
+    public interface IAnimationModel : IAnimationModelObserver
     {
-        new Vector3 PureDirection { get; set; }
-
+        new float AnimationBlend { get; set; }
+        new bool IsJumped { get; set; }
+        new bool IsFall { get; set; }
+        void InvokeUpdateEvent();
     }
 }

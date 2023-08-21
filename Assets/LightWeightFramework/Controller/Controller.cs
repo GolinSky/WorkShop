@@ -30,6 +30,7 @@ namespace LightWeightFramework.Controller
         public void Init(IGameObserver gameObserver)
         {
             GameObserver = gameObserver;
+            OnBeforeComponentsInitialed();
             components = BuildsComponents();
             foreach (var component in components)
             {
@@ -72,6 +73,7 @@ namespace LightWeightFramework.Controller
         }
         
         protected virtual void OnInit(){}
+        protected virtual void OnBeforeComponentsInitialed(){}
         protected virtual void OnRelease(){}
     }
 }

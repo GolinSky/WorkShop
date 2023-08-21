@@ -10,7 +10,7 @@ namespace WorkShop.Commands.Player
     public interface IPlayerCommand:ICommand
     {
         void UpdatePosition(Vector3 position);
-        void RegisterMonoProvider(IGroundedProvider groundedProvider);
+        void RegisterMonoProvider(IMovementProvider movementProvider);
 
     }
     public class PlayerCommand:Command<PlayerController>, IPlayerCommand
@@ -26,9 +26,9 @@ namespace WorkShop.Commands.Player
             playerService.UpdatePosition(position);
         }
 
-        public void RegisterMonoProvider(IGroundedProvider groundedProvider)
+        public void RegisterMonoProvider(IMovementProvider movementProvider)
         {
-            Controller.RegisterGroundedProvider(groundedProvider);
+            Controller.RegisterGroundedProvider(movementProvider);
         }
     }
 }

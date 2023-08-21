@@ -7,73 +7,70 @@ using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models;
+using WorkShop.Models.Input;
 using WorkShop.MonoProviders;
-using WorkShop.Services.Player;
 
 namespace WorkShop.Controllers
 {
     public class PlayerController: Controller<PlayerModel>, ITick
     {
-        private MoveComponent moveComponent;
+        private PlayerMoveComponent moveComponent;
         private AnimationComponent animationComponent;
-        private IInputService inputService;
-        private IGroundedProvider groundedProvider;
+        private IMovementProvider movementProvider;
         private Vector3 direction;
-        private Vector3 gravityDirection;
+        private float currentY;
+        private IInputModelObserver inputModel;
 
         public override string Id => "Player";
 
         public PlayerController(PlayerModel model) : base(model)
         {
-            gravityDirection.y = Physics.gravity.y;
         }
 
-       
+        protected override void OnBeforeComponentsInitialed()
+        {
+            base.OnBeforeComponentsInitialed();
+            inputModel = GameObserver.ModelHub.GetModel<InputModel>();
+        }
+
         protected override void OnInit()
         {
             base.OnInit();
-            inputService = GameObserver.ServiceHub.Get<IInputService>();
-
-            moveComponent = GetComponent<MoveComponent>();
+            moveComponent = GetComponent<PlayerMoveComponent>();
             animationComponent = GetComponent<AnimationComponent>();
         }
 
         protected override List<IComponent> BuildsComponents()
         {
+            var moveComponent = new MoveComponent(Model);
             var components = base.BuildsComponents();
             components.Add(new UpdateComponent(this));
-            components.Add(new MoveComponent(Model));
-            components.Add(new AnimationComponent(Model));
+            components.Add(moveComponent);
+            components.Add(new AnimationComponent(Model, inputModel));
+            components.Add(new PlayerMoveComponent(Model, moveComponent, inputModel));
             return components;
         }
         
+        
         public void Notify(float deltaTime)
         {
-            Model.Grounded = groundedProvider.IsGrounded;
-            Debug.Log($"Model.Grounded:{Model.Grounded}");
-            if (!groundedProvider.IsGrounded)
-            {
-                moveComponent.Move(deltaTime, gravityDirection);
-                animationComponent.Update(gravityDirection);
-                return; 
-            }
-               
+            if(inputModel == null) return;
             
-            direction.x = inputService.UserInput.x;
-            direction.z = inputService.UserInput.y;
-            direction.y = Physics.gravity.y;
-            moveComponent.Move(deltaTime, direction);
-            animationComponent.Update(direction);
-        }
+            Model.Grounded = movementProvider.IsGrounded;
+            Model.Velocity = movementProvider.Velocity;
 
+            moveComponent.Update(deltaTime);
+            animationComponent.Update(deltaTime);
+        }
+        
         public override ICommand GetCommand()
         {
             return new PlayerCommand(this, GameObserver);
         }
 
-        public void RegisterGroundedProvider(IGroundedProvider groundedProvider)
+        public void RegisterGroundedProvider(IMovementProvider movementProvider)
         {
-            this.groundedProvider = groundedProvider;
+            this.movementProvider = movementProvider;
         }
     }
 }

@@ -1,11 +1,16 @@
 using UnityEngine;
+using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models.TransformModels;
 using Component = WorkShop.LightWeightFramework.Components.Component;
 
 namespace WorkShop.Components.Controller
 {
-    public class MoveComponent:Component
+    public interface IMoveComponent:IComponent
+    {
+        void Move(float deltaTime, Vector3 direction);
+    }
+    public class MoveComponent:Component, IMoveComponent
     {
         private Vector3 position;
         private readonly ITransformModel model;
@@ -17,7 +22,6 @@ namespace WorkShop.Components.Controller
 
         protected override void OnInit(IGameObserver gameObserver)
         {
-            position = model.Position;
             model.UpdatePosition(position, Vector3.zero);
 
         }
@@ -28,9 +32,6 @@ namespace WorkShop.Components.Controller
 
         public void Move(float deltaTime, Vector3 direction)
         {
-          //  model.PureDirection = direction;
-          //  direction *= deltaTime;
-            position += direction * model.Speed * deltaTime;//todo:use values from model - like speed and etc...
             model.UpdatePosition(position, direction);
         }
 

@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c8fbf5708928f44a2ce39c78c1645d, type: 3}
   m_Name: PlayerModel
   m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 5
-  <Position>k__BackingField: {x: 0, y: 6, z: 0}
+  <JumpHeight>k__BackingField: 1.2
+  <Gravity>k__BackingField: -15
+  <JumpTimeout>k__BackingField: 0.5
+  <RotationSmoothTime>k__BackingField: 0.12
+  <SpeedChangeRate>k__BackingField: 10
+  <MoveSpeed>k__BackingField: 3
+  <SprintSpeed>k__BackingField: 6
+  <FallTimeout>k__BackingField: 0.15

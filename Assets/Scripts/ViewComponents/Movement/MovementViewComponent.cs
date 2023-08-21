@@ -5,6 +5,7 @@ namespace WorkShop.ViewComponents.Movement
     public class MovementViewComponent:BaseMovementViewComponent<Transform>
     {
         public override bool IsGrounded => true;
+        public override Vector3 Velocity { get; }
 
         protected override void ChangePosition(Vector3 position)
         {

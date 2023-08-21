@@ -4,9 +4,11 @@ using LightWeightFramework.Model;
 using UnityEngine;
 using WorkShop.Controllers;
 using WorkShop.Controllers.Camera;
+using WorkShop.Controllers.Input;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
 using WorkShop.Models.Camera;
+using WorkShop.Models.Input;
 
 namespace WorkShop.Launcher
 {
@@ -19,7 +21,8 @@ namespace WorkShop.Launcher
             return new List<IController>()
             {
                 { CreateEntity<PlayerController, PlayerModel>(gameObserver) },
-                { CreateEntity<CameraController, CameraModel>(gameObserver) }
+                { CreateEntity<CameraController, CameraModel>(gameObserver) },
+                { CreateEntity<InputController, InputModel>(gameObserver) }
             };
         }
 

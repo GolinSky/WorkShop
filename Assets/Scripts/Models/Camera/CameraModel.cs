@@ -1,17 +1,17 @@
 using System;
 using LightWeightFramework.Model;
 using UnityEngine;
-using WorkShop.Models.TransformModels;
 
 namespace WorkShop.Models.Camera
 {
-    public interface ICameraModelObserver:ITransformModelObserver
+    public interface ICameraModelObserver:IModelObserver//:ITransformModelObserver
     {
         Vector3 Distance { get; }
         Vector3 LookAtPosition { get; }
+        event Action<Vector3> OnPositionChanged;
     }
 
-    public interface ICameraModel:ICameraModelObserver, ITransformModel
+    public interface ICameraModel:ICameraModelObserver//, ITransformModel
     {
         
     }

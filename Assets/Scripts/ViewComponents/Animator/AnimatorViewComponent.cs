@@ -7,36 +7,39 @@ namespace WorkShop.ViewComponents
     public class AnimatorViewComponent:ViewComponent<IAnimationModelObserver>
     {
         [SerializeField] private Animator animator;
-        [SerializeField] private string blendXName = "Horizontal";
-        [SerializeField] private string blendYName = "Vertical";
-        [SerializeField] private string groundedName = "Grounded";
-
-        private int blendXNameHash;
-        private int blendYNameHash;
-        private int groundedNameHash;
         
+        private int animIDSpeed;
+        private int animIDGrounded;
+        private int animIDJump;
+        private int animIDFreeFall;
+        private int animIDMotionSpeed;
+
+
         protected override void OnInit()
         {
             base.OnInit();
-            Model.OnPositionChanged += UpdateAnimator;
-            blendXNameHash = Animator.StringToHash(blendXName);
-            blendYNameHash = Animator.StringToHash(blendYName);
-            groundedNameHash = Animator.StringToHash(groundedName);
+            animIDSpeed = Animator.StringToHash("Speed");
+            animIDGrounded = Animator.StringToHash("Grounded");
+            animIDJump = Animator.StringToHash("Jump");
+            animIDFreeFall = Animator.StringToHash("FreeFall");
+            animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            
+            
+            Model.OnUpdateData += UpdateAnimator;
         }
         
         protected override void OnRelease()
         {
-            Model.OnPositionChanged -= UpdateAnimator;
+            Model.OnUpdateData -= UpdateAnimator;
         }
 
-        private void UpdateAnimator(Vector3 position)
+        private void UpdateAnimator()
         {
-            var direction = Model.PureDirection;
-            
-            animator.SetFloat(blendXNameHash, direction.x);
-            animator.SetFloat(blendYNameHash, direction.z);
-            animator.SetBool(groundedNameHash, Model.Grounded);
-            Debug.Log($"AnimatorViewComponent.Grounded:{Model.Grounded}");
+            animator.SetBool(animIDGrounded, Model.Grounded);
+            animator.SetFloat(animIDSpeed, Model.AnimationBlend);
+            animator.SetFloat(animIDMotionSpeed, Model.InputMagnitude);
+            animator.SetBool(animIDJump, Model.IsJumped);
+            animator.SetBool(animIDFreeFall, Model.IsFall);
         }
     }
 }
