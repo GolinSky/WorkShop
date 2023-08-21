@@ -10,8 +10,9 @@ namespace WorkShop.ViewComponents.Movement
     {
         [SerializeField] protected TComponent target;
      
-        public abstract bool IsGrounded { get; }
         public abstract Vector3 Velocity { get; }
+        public abstract bool IsGrounded { get; }
+
 
         protected override void OnInit()
         {
