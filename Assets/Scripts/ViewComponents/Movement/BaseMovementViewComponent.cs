@@ -12,7 +12,6 @@ namespace WorkShop.ViewComponents.Movement
      
         public abstract bool IsGrounded { get; }
         public abstract Vector3 Velocity { get; }
-        public virtual Transform Transform => transform;
 
         protected override void OnInit()
         {
