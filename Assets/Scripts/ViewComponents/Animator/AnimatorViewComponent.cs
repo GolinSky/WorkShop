@@ -4,7 +4,7 @@ using WorkShop.Models.Animators;
 
 namespace WorkShop.ViewComponents
 {
-    public class AnimatorViewComponent:ViewComponent<IAnimationModelObserver>
+    public class AnimatorViewComponent:ViewComponent<IAnimationModelObserverObserver>
     {
         [SerializeField] private Animator animator;
         

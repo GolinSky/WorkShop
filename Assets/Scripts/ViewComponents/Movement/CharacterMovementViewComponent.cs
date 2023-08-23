@@ -1,8 +1,9 @@
 using UnityEngine;
+using WorkShop.Models.TransformModels;
 
 namespace WorkShop.ViewComponents.Movement
 {
-    public class CharacterMovementViewComponent : BaseMovementViewComponent<CharacterController>
+    public class CharacterMovementViewComponent : BaseMovementViewComponent<CharacterController, ITransformModelObserverObserver>
     {
         private GameObject MainCamera => Camera.main.gameObject;
 

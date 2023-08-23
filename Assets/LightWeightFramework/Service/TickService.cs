@@ -23,9 +23,14 @@ namespace WorkShop.LightWeightFramework.Service
 
         public void Update(float deltaTime)
         {
-            foreach (var customObserver in observers)
+            // foreach (var customObserver in observers)
+            // {
+            //     customObserver.Notify(deltaTime);
+            // }
+
+            for (var i = 0; i < observers.Count; i++)
             {
-                customObserver.Notify(deltaTime);
+                observers[i].Notify(deltaTime);
             }
         }
 

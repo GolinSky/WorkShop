@@ -14,9 +14,9 @@ namespace WorkShop.Models
     [CreateAssetMenu(fileName = "PlayerModel", menuName = "Models/PlayerModel", order = 1)]
     public class PlayerModel : Model, IPlayerModelObserver
     {
+        public event Action<Vector3> OnPositionChanged;
         public event Action OnUpdateData;
         public event Action OnJump;
-        public event Action<Vector3> OnPositionChanged;
 
         [field: SerializeField] public float JumpHeight { get; private set; }
         [field: SerializeField] public float Gravity { get; private set; }
@@ -26,17 +26,16 @@ namespace WorkShop.Models
         [field: SerializeField] public float MoveSpeed { get; private set; }
         [field: SerializeField] public float SprintSpeed { get; private set; }
         [field: SerializeField] public float FallTimeout { get; private set; }
-        
+
+        public Vector3 Velocity { get; set; }
+        public Vector2 MoveDirection { get; set; }
         public float AnimationBlend { get; set; }
-        public bool IsJumped { get; set; }
-        public bool IsFall { get; set; }
         public float Speed { get; set; }
         public float InputMagnitude { get; set; }
-        public Vector2 MoveDirection { get; set; }
         public float VerticalVelocity { get; set; }
+        public bool IsJumped { get; set; }
+        public bool IsFall { get; set; }
         public bool Grounded { get; set; }
-        public bool CanJump { get; set; }
-        public Vector3 Velocity { get; set; }
         
 
         public void InvokeJumpEvent()

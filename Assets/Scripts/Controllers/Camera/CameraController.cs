@@ -5,6 +5,7 @@ using WorkShop.Components.Controller;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models.Camera;
+using WorkShop.Models.Input;
 using WorkShop.Services.Player;
 
 namespace WorkShop.Controllers.Camera
@@ -21,6 +22,7 @@ namespace WorkShop.Controllers.Camera
         private float currentX = 0.0f;
         private float currentY = 0.0f;
         private float prevDistance;
+        private IInputModelObserver inputModel;
 
 
         public override string Id => "Camera";
@@ -33,7 +35,7 @@ namespace WorkShop.Controllers.Camera
         {
             var components = base.BuildsComponents();
             components.Add(new UpdateComponent(this));
-            // components.Add(new MoveComponent(Model));
+            components.Add(new MoveComponent(Model));
 
             return components;
         }
@@ -42,20 +44,21 @@ namespace WorkShop.Controllers.Camera
         {
             base.OnInit();
             playerService = GetService<IPlayerService>();
-           // moveComponent = GetComponent<MoveComponent>();
+            moveComponent = GetComponent<MoveComponent>();
             inputService = GameObserver.ServiceHub.Get<IInputService>();
+            inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
         }
 
         public void Notify(float deltaTime)
         {
-            // cameraPosition = playerService.PlayerPosition; //+ ;
-            // currentX += inputService.MouseAxisInput.x * Model.Sensitivity * deltaTime;
-            // currentY += inputService.MouseAxisInput.y * Model.Sensitivity * deltaTime;
-            // currentY = Mathf.Clamp(currentY, Model.YMin, Model.YMax);
-            // Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-            // cameraPosition += rotation * Model.Distance;
+            cameraPosition = playerService.PlayerPosition; //+ ;
+            currentX += inputModel.Look.x * Model.Sensitivity * deltaTime;
+            currentY += inputModel.Look.y * Model.Sensitivity * deltaTime;
+            currentY = Mathf.Clamp(currentY, Model.YMin, Model.YMax);
+            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
+            cameraPosition += rotation * Model.Distance;
             Model.LookAtPosition = playerService.PlayerPosition;
-          //  moveComponent.SetPosition(cameraPosition, Vector3.zero);
+            moveComponent.SetPosition(cameraPosition, Vector3.zero);
         }
     }
 }

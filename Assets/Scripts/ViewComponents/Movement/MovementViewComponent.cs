@@ -1,8 +1,9 @@
 using UnityEngine;
+using WorkShop.Models.TransformModels;
 
 namespace WorkShop.ViewComponents.Movement
 {
-    public class MovementViewComponent:BaseMovementViewComponent<Transform>
+    public class MovementViewComponent:BaseMovementViewComponent<Transform, IBaseTransformModelObserver>
     {
         public override bool IsGrounded => true;
         public override Vector3 Velocity { get; }

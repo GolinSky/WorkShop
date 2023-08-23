@@ -5,8 +5,9 @@ using WorkShop.MonoProviders;
 
 namespace WorkShop.ViewComponents.Movement
 {
-    public abstract class BaseMovementViewComponent<TComponent>:ViewComponent<ITransformModelObserver>, IMovementProvider
+    public abstract class BaseMovementViewComponent<TComponent, TTransformModel>:ViewComponent<TTransformModel>, IMovementProvider
         where TComponent:Component
+        where TTransformModel:IBaseTransformModelObserver
     {
         [SerializeField] protected TComponent target;
      

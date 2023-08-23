@@ -13,9 +13,9 @@ namespace WorkShop.Components.Controller
     public class MoveComponent:Component, IMoveComponent
     {
         private Vector3 position;
-        private readonly ITransformModel model;
+        private readonly IBaseTransformModel model;
 
-        public MoveComponent(ITransformModel model)
+        public MoveComponent(IBaseTransformModel model)
         {
             this.model = model;
         }
@@ -23,7 +23,6 @@ namespace WorkShop.Components.Controller
         protected override void OnInit(IGameObserver gameObserver)
         {
             model.UpdatePosition(position, Vector3.zero);
-
         }
 
         protected override void OnRelease()

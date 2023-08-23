@@ -3,7 +3,7 @@ using WorkShop.Models.TransformModels;
 
 namespace WorkShop.Models.Animators
 {
-    public interface IAnimationModelObserver : ITransformModelObserver
+    public interface IAnimationModelObserverObserver : ITransformModelObserverObserver
     {
         float FallTimeout { get; }
         float AnimationBlend { get; }
@@ -12,7 +12,7 @@ namespace WorkShop.Models.Animators
         event Action OnUpdateData;
     }
 
-    public interface IAnimationModel : IAnimationModelObserver
+    public interface IAnimationModel : IAnimationModelObserverObserver
     {
         new float AnimationBlend { get; set; }
         new bool IsJumped { get; set; }
