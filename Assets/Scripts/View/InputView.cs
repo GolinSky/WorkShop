@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using WorkShop.Commands;
-using WorkShop.LightWeightFramework.Views;
 using WorkShop.Models.Input;
-
+using WorkShop.LightWeightFramework;
 namespace WorkShop.View
 {
     public class InputView : View<IInputModelObserver, IInputCommand>

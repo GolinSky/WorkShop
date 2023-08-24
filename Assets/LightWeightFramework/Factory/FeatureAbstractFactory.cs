@@ -1,6 +1,7 @@
 using System;
 using LightWeightFramework.Controller;
 using LightWeightFramework.Model;
+using UnityEngine;
 using WorkShop.LightWeightFramework.Repository;
 using Object = UnityEngine.Object;
 
@@ -22,9 +23,10 @@ namespace WorkShop.LightWeightFramework.Factory
             return (TController)Activator.CreateInstance(typeof(TController), model);
         }
 
-        public Views.View CreateView(string entityId)
+        public View CreateView(string entityId)
         {
-            return Object.Instantiate(repository.Load<Views.View>(entityId));
+            var obj = repository.Load<GameObject>(entityId);
+            return Object.Instantiate(obj).GetComponent<View>();
         }
 
         public TModel CreateModel<TModel>(string entityId) where TModel : Object, IModel

@@ -1,6 +1,6 @@
 using LightWeightFramework.Model;
 
-namespace WorkShop.LightWeightFramework.Views
+namespace WorkShop.LightWeightFramework
 {
     
     //add command

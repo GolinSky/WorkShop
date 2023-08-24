@@ -3,7 +3,7 @@ using UnityEngine;
 using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.ViewComponents;
 
-namespace WorkShop.LightWeightFramework.Views
+namespace WorkShop.LightWeightFramework
 {
     public abstract class View : MonoBehaviour, IView
     {

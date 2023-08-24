@@ -2,6 +2,7 @@ using UnityEngine;
 using WorkShop.LightWeightFramework.Factory;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Repository;
+using WorkShop.Repository;
 
 namespace WorkShop.Launcher
 {
@@ -14,7 +15,7 @@ namespace WorkShop.Launcher
 
         private void Awake()
         {
-            Game = new Game(new FeatureAbstractFactory(new ResourceRepository()), new MyGameContext());
+            Game = new Game(new FeatureAbstractFactory(new AddressableRepository()), new MyGameContext());
             Game.LoadLevel(levelData);
         }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using WorkShop.Commands.Camera;
 using WorkShop.Models.Camera;
-using WorkShop.LightWeightFramework.Views;
+using WorkShop.LightWeightFramework;
 using WorkShop.MonoProviders;
 
 namespace WorkShop.View

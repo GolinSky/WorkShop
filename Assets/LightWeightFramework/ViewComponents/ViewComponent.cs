@@ -5,9 +5,9 @@ namespace WorkShop.LightWeightFramework.ViewComponents
     public abstract class ViewComponent:MonoBehaviour
     {
         protected IModelObserver ModelObserver { get; private set; }
-        protected Views.View View { get; private set; }
+        protected View View { get; private set; }
         
-        public void Init(Views.View view)
+        public void Init(View view)
         {
             View = view;
             ModelObserver = view.ModelObserver;

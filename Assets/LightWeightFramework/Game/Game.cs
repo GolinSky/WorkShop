@@ -3,11 +3,9 @@ using System.Linq;
 using LightWeightFramework.Controller;
 using LightWeightFramework.Model;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Factory;
 using WorkShop.LightWeightFramework.Service;
-using WorkShop.LightWeightFramework.Views;
 
 namespace WorkShop.LightWeightFramework.Game
 {

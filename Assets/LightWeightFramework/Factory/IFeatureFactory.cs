@@ -11,7 +11,7 @@ namespace WorkShop.LightWeightFramework.Factory
             where TModel : IModel;
 
   
-        Views.View CreateView(string entityId);
+        View CreateView(string entityId);
 
         TModel CreateModel<TModel>(string entityId) where TModel :Object, IModel;
      
