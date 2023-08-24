@@ -2,6 +2,7 @@ using UnityEngine;
 using WorkShop.Commands.Player;
 using WorkShop.LightWeightFramework.Views;
 using WorkShop.Models;
+using WorkShop.Models.TransformModels;
 using WorkShop.MonoProviders;
 
 namespace WorkShop.View
@@ -12,7 +13,7 @@ namespace WorkShop.View
 
         protected override void OnInit(IPlayerModelObserver model)
         {
-            Model.OnPositionChanged += OnChangePosition;
+            Model.GetModelObserver<ITransformModelObserver>().OnPositionChanged += OnChangePosition;
             foreach (var viewComponent in viewComponents)
             {
                 if (viewComponent is IMovementProvider groundedProvider)
@@ -25,7 +26,7 @@ namespace WorkShop.View
 
         protected override void OnRelease()
         {
-            Model.OnPositionChanged -= OnChangePosition;
+            Model.GetModelObserver<ITransformModelObserver>().OnPositionChanged -= OnChangePosition;
         }
         
         private void ChangeRotation(float yAxis)

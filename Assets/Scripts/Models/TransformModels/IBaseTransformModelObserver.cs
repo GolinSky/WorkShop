@@ -10,7 +10,7 @@ namespace WorkShop.Models.TransformModels
 
     }
     
-    public interface IBaseTransformModel:IBaseTransformModelObserver
+    public interface IBaseTransformModel:IModel, IBaseTransformModelObserver
     {
         void UpdatePosition(Vector3 position, Vector3 direction);
 

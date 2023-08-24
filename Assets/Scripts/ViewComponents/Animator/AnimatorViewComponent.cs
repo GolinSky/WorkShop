@@ -4,7 +4,7 @@ using WorkShop.Models.Animators;
 
 namespace WorkShop.ViewComponents
 {
-    public class AnimatorViewComponent:ViewComponent<IAnimationModelObserverObserver>
+    public class AnimatorViewComponent:ViewComponent<IAnimationModelObserver>
     {
         [SerializeField] private Animator animator;
         
@@ -35,9 +35,9 @@ namespace WorkShop.ViewComponents
 
         private void UpdateAnimator()
         {
-            animator.SetBool(animIDGrounded, Model.Grounded);
+            animator.SetBool(animIDGrounded, Model.CurrentTransformModelObserver.Grounded);
             animator.SetFloat(animIDSpeed, Model.AnimationBlend);
-            animator.SetFloat(animIDMotionSpeed, Model.InputMagnitude);
+            animator.SetFloat(animIDMotionSpeed, Model.CurrentTransformModelObserver.InputMagnitude);
             animator.SetBool(animIDJump, Model.IsJumped);
             animator.SetBool(animIDFreeFall, Model.IsFall);
         }

@@ -1,7 +1,9 @@
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
+using WorkShop.Models;
 using WorkShop.Models.Animators;
 using WorkShop.Models.Input;
+using WorkShop.Models.TransformModels;
 using Component = WorkShop.LightWeightFramework.Components.Component;
 
 namespace WorkShop.Components.Controller
@@ -13,24 +15,27 @@ namespace WorkShop.Components.Controller
 
         private readonly IAnimationModel model;
         private readonly IInputModelObserver inputModel;
+        private ITransformModelObserver transformModelObserver;
         private float animationBlend;
         private float fallTimeoutDelta;
 
-        public AnimationComponent(IAnimationModel model, IInputModelObserver inputModel)
+        public AnimationComponent(PlayerModel playerModel, IInputModelObserver inputModel)
         {
-            this.model = model;
+            model = playerModel.GetModel<IAnimationModel>();
+            model.CurrentTransformModel = playerModel.GetModel<ITransformModel>();
             this.inputModel = inputModel;
             fallTimeoutDelta = model.FallTimeout;
+            transformModelObserver = model.CurrentTransformModelObserver;
 
         }
         protected override void OnInit(IGameObserver gameObserver)
         {
-            model.OnJump += OnJump;
+            transformModelObserver.OnJump += OnJump;
         }
 
         protected override void OnRelease()
         {
-            model.OnJump -= OnJump;
+            transformModelObserver.OnJump -= OnJump;
         }
         
         private void OnJump()
@@ -43,10 +48,10 @@ namespace WorkShop.Components.Controller
             float targetSpeed = inputModel.Move == Vector2.zero
                 ? ZeroSpeed
                 : inputModel.Sprint
-                    ? model.SprintSpeed
-                    : model.MoveSpeed;
+                    ? transformModelObserver.SprintSpeed
+                    : transformModelObserver.MoveSpeed;
             
-            animationBlend = Mathf.Lerp(animationBlend, targetSpeed, deltaTime * model.SpeedChangeRate);
+            animationBlend = Mathf.Lerp(animationBlend, targetSpeed, deltaTime * transformModelObserver.SpeedChangeRate);
             
             if (animationBlend < 0.01f)// magic number with float prec - fix this
             {
@@ -54,7 +59,7 @@ namespace WorkShop.Components.Controller
             }
 
             model.AnimationBlend = animationBlend;
-            if (model.Grounded)
+            if (transformModelObserver.Grounded)
             {
                 fallTimeoutDelta = model.FallTimeout;
                 model.IsFall = false;

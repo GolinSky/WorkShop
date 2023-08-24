@@ -3,7 +3,7 @@ using WorkShop.Models.TransformModels;
 
 namespace WorkShop.ViewComponents.Movement
 {
-    public class CharacterMovementViewComponent : BaseMovementViewComponent<CharacterController, ITransformModelObserverObserver>
+    public class CharacterMovementViewComponent : BaseMovementViewComponent<CharacterController, ITransformModelObserver>
     {
         private GameObject MainCamera => Camera.main.gameObject;
 

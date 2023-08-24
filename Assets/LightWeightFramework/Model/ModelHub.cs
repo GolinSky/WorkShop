@@ -33,6 +33,7 @@ namespace LightWeightFramework.Model
 
             var newModel = factory.CreateModel<TModel>(entityId);
             modelsList.Add(newModel);
+            newModel.Init();
             return newModel;
         }
 

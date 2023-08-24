@@ -1,5 +1,6 @@
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
+using WorkShop.Models;
 using WorkShop.Models.Input;
 using WorkShop.Models.TransformModels;
 using Component = WorkShop.LightWeightFramework.Components.Component;
@@ -21,9 +22,9 @@ namespace WorkShop.Components.Controller
         private float jumpTimeoutDelta;
         private float targetRotation;
 
-        public PlayerMoveComponent(ITransformModel model, IMoveComponent moveComponent, IInputModelObserver inputModel)
+        public PlayerMoveComponent(PlayerModel model, IMoveComponent moveComponent, IInputModelObserver inputModel)
         {
-            this.model = model;
+            this.model = model.GetModel<ITransformModel>();
             this.moveComponent = moveComponent;
             this.inputModel = inputModel;
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WorkShop.Models.TransformModels
 {
-    public interface ITransformModelObserverObserver : IBaseTransformModelObserver
+    public interface ITransformModelObserver : IBaseTransformModelObserver
     {
         event Action OnJump; 
         Vector2 MoveDirection { get; }
@@ -21,7 +21,7 @@ namespace WorkShop.Models.TransformModels
         bool Grounded { get; }
     }
 
-    public interface ITransformModel :IBaseTransformModel, ITransformModelObserverObserver
+    public interface ITransformModel :IBaseTransformModel, ITransformModelObserver
     {
         void InvokeJumpEvent();
         new Vector2 MoveDirection { get; set; }
@@ -32,6 +32,4 @@ namespace WorkShop.Models.TransformModels
         Vector3 Velocity { get; set; }
 
     }
-
-  
 }

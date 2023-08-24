@@ -13,7 +13,6 @@ namespace WorkShop.Controllers.Camera
     public class CameraController : Controller<CameraModel>, ITick
     {
         private IPlayerService playerService;
-        private IInputService inputService;
         
         private MoveComponent moveComponent;
         private Vector3 prevMousePos;
@@ -45,7 +44,6 @@ namespace WorkShop.Controllers.Camera
             base.OnInit();
             playerService = GetService<IPlayerService>();
             moveComponent = GetComponent<MoveComponent>();
-            inputService = GameObserver.ServiceHub.Get<IInputService>();
             inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
         }
 

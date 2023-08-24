@@ -29,7 +29,7 @@ namespace WorkShop.LightWeightFramework.ViewComponents
         protected TModel Model { get; private set; }
         protected override void OnInit()
         {
-            Model = (TModel)ModelObserver;
+            Model = ModelObserver.GetModelObserver<TModel>();
         }
     }
 }
