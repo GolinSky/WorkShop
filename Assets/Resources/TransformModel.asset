@@ -18,4 +18,4 @@ MonoBehaviour:
   <RotationSmoothTime>k__BackingField: 0.12
   <SpeedChangeRate>k__BackingField: 10
   <MoveSpeed>k__BackingField: 3
-  <SprintSpeed>k__BackingField: 0.15
+  <SprintSpeed>k__BackingField: 5
