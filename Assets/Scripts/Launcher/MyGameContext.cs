@@ -10,7 +10,7 @@ namespace WorkShop.Launcher
         public IService[] Services => new IService[]
         {
             new InputService(),
-            new PlayerService(),
+            new ActorTransformService(),
             new CursorService()
         };
     }

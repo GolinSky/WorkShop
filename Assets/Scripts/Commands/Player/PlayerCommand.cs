@@ -1,4 +1,3 @@
-using UnityEngine;
 using WorkShop.Controllers;
 using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Game;
@@ -9,26 +8,20 @@ namespace WorkShop.Commands.Player
 {
     public interface IPlayerCommand:ICommand
     {
-        void UpdatePosition(Vector3 position);
         void RegisterMonoProvider(IMovementProvider movementProvider);
 
     }
     public class PlayerCommand:Command<PlayerController>, IPlayerCommand
     {
-        private readonly IPlayerService playerService;
+        private readonly IActorTransformService actorTransformService;
         public PlayerCommand(PlayerController controller, IGameObserver observer) : base(controller, observer)
         {
-            playerService = observer.ServiceHub.Get<IPlayerService>();
+            actorTransformService = observer.ServiceHub.Get<IActorTransformService>();
         }
-
-        public void UpdatePosition(Vector3 position)
-        {
-            playerService.UpdatePosition(position);
-        }
-
+        
         public void RegisterMonoProvider(IMovementProvider movementProvider)
         {
-            Controller.RegisterGroundedProvider(movementProvider);
+            actorTransformService.AddActor(ActorType.Player, movementProvider);
         }
     }
 }

@@ -8,8 +8,6 @@ using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models;
 using WorkShop.Models.Input;
-using WorkShop.Models.TransformModels;
-using WorkShop.MonoProviders;
 
 namespace WorkShop.Controllers
 {
@@ -17,9 +15,7 @@ namespace WorkShop.Controllers
     {
         private PlayerMoveComponent moveComponent;
         private AnimationComponent animationComponent;
-        private IMovementProvider movementProvider;
         private IInputModelObserver inputModel;
-        private ITransformModel currentTransformModel;
         private Vector3 direction;
         private float currentY;
 
@@ -27,7 +23,6 @@ namespace WorkShop.Controllers
 
         public PlayerController(PlayerModel model) : base(model)
         {
-            currentTransformModel = Model.GetModel<ITransformModel>();
         }
 
         protected override void OnBeforeComponentsInitialed()
@@ -43,6 +38,7 @@ namespace WorkShop.Controllers
             animationComponent = GetComponent<AnimationComponent>();
         }
 
+
         protected override List<IComponent> BuildsComponents()
         {
             var moveComponent = new MoveComponent(Model.TransformModel);
@@ -54,15 +50,10 @@ namespace WorkShop.Controllers
             return components;
         }
         
-        
         public void Notify(float deltaTime)
         {
             if(inputModel == null) return;
-            
-            //move to command
-            currentTransformModel.Grounded = movementProvider.IsGrounded;
-            currentTransformModel.Velocity = movementProvider.Velocity;
-
+     
             moveComponent.Update(deltaTime);
             animationComponent.Update(deltaTime);
         }
@@ -72,9 +63,6 @@ namespace WorkShop.Controllers
             return new PlayerCommand(this, GameObserver);
         }
 
-        public void RegisterGroundedProvider(IMovementProvider movementProvider)
-        {
-            this.movementProvider = movementProvider;
-        }
+  
     }
 }

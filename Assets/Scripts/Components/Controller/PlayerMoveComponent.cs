@@ -3,6 +3,8 @@ using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
 using WorkShop.Models.Input;
 using WorkShop.Models.TransformModels;
+using WorkShop.MonoProviders;
+using WorkShop.Services.Player;
 using Component = WorkShop.LightWeightFramework.Components.Component;
 
 namespace WorkShop.Components.Controller
@@ -17,6 +19,8 @@ namespace WorkShop.Components.Controller
         private readonly ITransformModel model;
         private readonly IMoveComponent moveComponent;
         private readonly IInputModelObserver inputModel;
+        private IMovementProvider playerProvider;
+        private IActorTransformService actorTransformService;
 
         private float verticalVelocity;
         private float jumpTimeoutDelta;
@@ -32,14 +36,34 @@ namespace WorkShop.Components.Controller
         protected override void OnInit(IGameObserver gameObserver)
         {
             jumpTimeoutDelta = model.JumpTimeout;
+            actorTransformService = GameObserver.ServiceHub.Get<IActorTransformService>();
+            if (!actorTransformService.HasActor(ActorType.Player, out playerProvider))
+            {
+                actorTransformService.OnActorAdded += UpdateActor;
+            }
         }
 
         protected override void OnRelease()
         {
+            actorTransformService.OnActorAdded -= UpdateActor;
+        }
+        
+        private void UpdateActor(ActorType actorType, IMovementProvider movementProvider)
+        {
+            if (actorType == ActorType.Player)
+            {
+                playerProvider = movementProvider;
+            }
         }
 
         public void Update(float deltaTime)
         {
+            if (playerProvider != null)
+            {
+                model.Grounded = playerProvider.IsGrounded;
+                model.Velocity = playerProvider.Velocity;
+            }
+            
             if (model.Grounded)
             {
                 if (verticalVelocity < 0.0f)

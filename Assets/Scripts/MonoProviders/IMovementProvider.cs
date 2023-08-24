@@ -7,6 +7,8 @@ namespace WorkShop.MonoProviders
     {
         bool IsGrounded { get; }
         Vector3 Velocity { get; }
+        Vector3 Position { get; }
+        Vector3 Angles { get; }
     }
 
 }

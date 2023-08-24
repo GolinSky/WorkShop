@@ -12,6 +12,8 @@ namespace WorkShop.ViewComponents.Movement
         [SerializeField] protected TComponent target;
      
         public abstract Vector3 Velocity { get; }
+        public virtual Vector3 Position => transform.position;
+        public Vector3 Angles => transform.eulerAngles;
         public abstract bool IsGrounded { get; }
 
 

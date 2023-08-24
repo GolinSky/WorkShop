@@ -6,13 +6,14 @@ using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models.Camera;
 using WorkShop.Models.Input;
+using WorkShop.MonoProviders;
 using WorkShop.Services.Player;
 
 namespace WorkShop.Controllers.Camera
 {
     public class CameraController : Controller<CameraModel>, ITick
     {
-        private IPlayerService playerService;
+        private IActorTransformService playerService;
         
         private MoveComponent moveComponent;
         private Vector3 prevMousePos;
@@ -22,6 +23,7 @@ namespace WorkShop.Controllers.Camera
         private float currentY = 0.0f;
         private float prevDistance;
         private IInputModelObserver inputModel;
+        private IMovementProvider playerProvider;
 
 
         public override string Id => "Camera";
@@ -42,20 +44,21 @@ namespace WorkShop.Controllers.Camera
         protected override void OnInit()
         {
             base.OnInit();
-            playerService = GetService<IPlayerService>();
+            playerService = GetService<IActorTransformService>();
             moveComponent = GetComponent<MoveComponent>();
             inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
+            playerProvider = playerService.GetActorProvider(ActorType.Player);
         }
 
         public void Notify(float deltaTime)
         {
-            cameraPosition = playerService.PlayerPosition; //+ ;
+            cameraPosition = playerProvider.Position;//+ ;
             currentX += inputModel.Look.x * Model.Sensitivity * deltaTime;
             currentY += inputModel.Look.y * Model.Sensitivity * deltaTime;
             currentY = Mathf.Clamp(currentY, Model.YMin, Model.YMax);
             Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
             cameraPosition += rotation * Model.Distance;
-            Model.LookAtPosition = playerService.PlayerPosition;
+            Model.LookAtPosition = playerProvider.Position;
             moveComponent.SetPosition(cameraPosition, Vector3.zero);
         }
     }
