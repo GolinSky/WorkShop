@@ -76,6 +76,7 @@ namespace WorkShop.Components.Controller
                     model.IsFall = true;
                 }
             }
+            
             model.InvokeUpdateEvent();
         }
     }

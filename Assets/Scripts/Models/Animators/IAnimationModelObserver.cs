@@ -13,7 +13,6 @@ namespace WorkShop.Models.Animators
         event Action OnUpdateData;
         
         ITransformModelObserver CurrentTransformModelObserver { get; }
-
     }
 
     public interface IAnimationModel :IModel, IAnimationModelObserver
@@ -21,6 +20,7 @@ namespace WorkShop.Models.Animators
         new float AnimationBlend { get; set; }
         new bool IsJumped { get; set; }
         new bool IsFall { get; set; }
+
         ITransformModel CurrentTransformModel { get; set; }
         void InvokeUpdateEvent();
         

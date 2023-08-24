@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
@@ -28,6 +27,7 @@ namespace WorkShop.Components.Controller
         private float jumpTimeoutDelta;
         private float targetRotation;
         private float rotationVelocity;
+        private float speed;
 
         public PlayerMoveComponent(PlayerModel model, IMoveComponent moveComponent, IInputModelObserver inputModel)
         {
@@ -65,12 +65,65 @@ namespace WorkShop.Components.Controller
 
         public void Update(float deltaTime)
         {
-            if (playerProvider != null)
+            UpdateDataFromProviders();
+            CalculateGravity(deltaTime);
+            CalculateSpeed(deltaTime);
+            var direction = CalculateDirection(deltaTime);
+            moveComponent.Move(deltaTime,  direction);
+        }
+
+        private Vector3 CalculateDirection(float deltaTime)
+        {
+            var moveDirection = inputModel.Move;
+            
+            Vector3 inputDirection = new Vector3(moveDirection.x, 0.0f, moveDirection.y).normalized;
+
+            if (moveDirection != Vector2.zero)
             {
-                model.Grounded = playerProvider.IsGrounded;
-                model.Velocity = playerProvider.Velocity;
+                targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                                 cameraProvider.Angles.y;
+                float rotation = Mathf.SmoothDampAngle(playerProvider.Angles.y, targetRotation, ref rotationVelocity,
+                    model.RotationSmoothTime);
+
+                model.Rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 
+            Vector3 targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
+            var direction = targetDirection.normalized * (speed * deltaTime) +
+                            new Vector3(0.0f, verticalVelocity, 0.0f) * deltaTime;
+            return direction;
+        }
+
+        private void CalculateSpeed(float deltaTime)
+        {
+            float targetSpeed = inputModel.Move == Vector2.zero
+                ? ZeroSpeed
+                : inputModel.Sprint
+                    ? model.SprintSpeed
+                    : model.MoveSpeed;
+
+            float currentHorizontalSpeed = new Vector3(model.Velocity.x, 0.0f, model.Velocity.z).magnitude;
+
+            model.InputMagnitude = inputModel.AnalogMovement
+                ? inputModel.Move.magnitude
+                : DefaultMagnitude;
+
+            if (currentHorizontalSpeed < targetSpeed - SpeedOffset ||
+                currentHorizontalSpeed > targetSpeed + SpeedOffset)
+            {
+                speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * model.InputMagnitude,
+                    deltaTime * model.SpeedChangeRate);
+
+                speed = Mathf.Round(speed * 1000f) / 1000f;
+            }
+            else
+            {
+                speed = targetSpeed;
+            }
+        }
+
+        private void CalculateGravity(float deltaTime)
+        {
             if (model.Grounded)
             {
                 if (verticalVelocity < 0.0f)
@@ -94,66 +147,20 @@ namespace WorkShop.Components.Controller
                 jumpTimeoutDelta = model.JumpTimeout;
                 inputModel.Jump = false; //move this reset out of here
             }
-
+            
             if (verticalVelocity < TerminalVelocity)
             {
                 verticalVelocity += model.Gravity * deltaTime;
             }
+        }
 
-            model.VerticalVelocity = verticalVelocity;
-
-            float targetSpeed = inputModel.Move == Vector2.zero
-                ? ZeroSpeed
-                : inputModel.Sprint
-                    ? model.SprintSpeed
-                    : model.MoveSpeed;
-
-            float currentHorizontalSpeed = new Vector3(model.Velocity.x, 0.0f, model.Velocity.z).magnitude;
-
-            float inputMagnitude = inputModel.AnalogMovement
-                ? inputModel.Move.magnitude
-                : DefaultMagnitude;
-
-            if (currentHorizontalSpeed < targetSpeed - SpeedOffset ||
-                currentHorizontalSpeed > targetSpeed + SpeedOffset)
+        private void UpdateDataFromProviders()
+        {
+            if (playerProvider != null)
             {
-                model.Speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                    deltaTime * model.SpeedChangeRate);
-
-                model.Speed = Mathf.Round(model.Speed * 1000f) / 1000f;
+                model.Grounded = playerProvider.IsGrounded;
+                model.Velocity = playerProvider.Velocity;
             }
-            else
-            {
-                model.Speed = targetSpeed;
-            }
-
-            model.InputMagnitude = inputModel.AnalogMovement
-                ? inputModel.Move.magnitude
-                : DefaultMagnitude;
-            model.MoveDirection = inputModel.Move;
-
-            
-            Vector3 inputDirection = new Vector3(model.MoveDirection.x, 0.0f, model.MoveDirection.y).normalized;
-
-        
-            if (model.MoveDirection != Vector2.zero)
-            {
-                targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                 cameraProvider.Angles.y;
-                float rotation = Mathf.SmoothDampAngle(playerProvider.Angles.y, targetRotation, ref rotationVelocity,
-                    model.RotationSmoothTime);
-
-                model.Rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-            }
-
-
-            Vector3 targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
-
-
-            var direction = targetDirection.normalized * (model.Speed * deltaTime) +
-                    new Vector3(0.0f, model.VerticalVelocity, 0.0f) * deltaTime;
-            
-            moveComponent.Move(deltaTime,  direction);
         }
     }
 }
