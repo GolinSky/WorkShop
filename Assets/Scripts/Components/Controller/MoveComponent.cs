@@ -31,7 +31,7 @@ namespace WorkShop.Components.Controller
 
         public void Move(float deltaTime, Vector3 direction)
         {
-            model.UpdatePosition(position, direction);
+            model.UpdateDirection(direction);
         }
 
         public void SetPosition(Vector3 position, Vector3 direction)

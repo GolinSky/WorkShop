@@ -62,7 +62,5 @@ namespace WorkShop.Controllers
         {
             return new PlayerCommand(this, GameObserver);
         }
-
-  
     }
 }

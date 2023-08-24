@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using LightWeightFramework.Controller;
 using UnityEngine;
+using WorkShop.Commands.Camera;
 using WorkShop.Components.Controller;
+using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models.Camera;
@@ -14,6 +16,8 @@ namespace WorkShop.Controllers.Camera
     public class CameraController : Controller<CameraModel>, ITick
     {
         private IActorTransformService playerService;
+        private IInputModelObserver inputModel;
+        private IMovementProvider playerProvider;
         
         private MoveComponent moveComponent;
         private Vector3 prevMousePos;
@@ -22,8 +26,7 @@ namespace WorkShop.Controllers.Camera
         private float currentX = 0.0f;
         private float currentY = 0.0f;
         private float prevDistance;
-        private IInputModelObserver inputModel;
-        private IMovementProvider playerProvider;
+   
 
 
         public override string Id => "Camera";
@@ -60,6 +63,11 @@ namespace WorkShop.Controllers.Camera
             cameraPosition += rotation * Model.Distance;
             Model.LookAtPosition = playerProvider.Position;
             moveComponent.SetPosition(cameraPosition, Vector3.zero);
+        }
+
+        public override ICommand GetCommand()
+        {
+            return new CameraCommand(this, GameObserver);
         }
     }
 }

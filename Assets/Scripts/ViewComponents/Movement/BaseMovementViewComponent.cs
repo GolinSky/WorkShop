@@ -21,13 +21,16 @@ namespace WorkShop.ViewComponents.Movement
         {
             base.OnInit();
             Model.OnPositionChanged += ChangePosition;
+            Model.OnDirectionChanged += ChangeDirection;
         }
         
         protected override void OnRelease()
         {
             Model.OnPositionChanged -= ChangePosition;
+            Model.OnDirectionChanged -= ChangeDirection;
         }
 
         protected abstract void ChangePosition(Vector3 position);
+        protected abstract void ChangeDirection(Vector3 direction);
     }
 }

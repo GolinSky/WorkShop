@@ -8,7 +8,8 @@ namespace WorkShop.Models.TransformModels
     public class TransformModel : Model,ITransformModel
     {
         public event Action<Vector3> OnPositionChanged;
-        
+        public event Action<Vector3> OnDirectionChanged;
+
         public event Action OnJump;
 
         public Vector2 MoveDirection { get; set; }
@@ -24,8 +25,9 @@ namespace WorkShop.Models.TransformModels
         public float VerticalVelocity { get; set; }
         public Vector3 Velocity { get; set; }
         public bool Grounded { get; set; }
-        
-    
+        public Quaternion Rotation { get; set; }
+
+
         public void InvokeJumpEvent()
         {
             OnJump?.Invoke();
@@ -34,6 +36,11 @@ namespace WorkShop.Models.TransformModels
         public void UpdatePosition(Vector3 position, Vector3 direction)
         {
             OnPositionChanged?.Invoke(position);
+        }
+
+        public void UpdateDirection(Vector3 direction)
+        {
+            OnDirectionChanged?.Invoke(direction);
         }
     }
 }

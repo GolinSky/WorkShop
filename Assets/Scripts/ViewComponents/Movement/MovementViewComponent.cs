@@ -12,5 +12,10 @@ namespace WorkShop.ViewComponents.Movement
         {
             target.position = position;
         }
+
+        protected override void ChangeDirection(Vector3 direction)
+        {
+            
+        }
     }
 }

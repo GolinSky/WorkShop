@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
@@ -20,11 +21,13 @@ namespace WorkShop.Components.Controller
         private readonly IMoveComponent moveComponent;
         private readonly IInputModelObserver inputModel;
         private IMovementProvider playerProvider;
+        private IMovementProvider cameraProvider;
         private IActorTransformService actorTransformService;
 
         private float verticalVelocity;
         private float jumpTimeoutDelta;
         private float targetRotation;
+        private float rotationVelocity;
 
         public PlayerMoveComponent(PlayerModel model, IMoveComponent moveComponent, IInputModelObserver inputModel)
         {
@@ -37,22 +40,26 @@ namespace WorkShop.Components.Controller
         {
             jumpTimeoutDelta = model.JumpTimeout;
             actorTransformService = GameObserver.ServiceHub.Get<IActorTransformService>();
-            if (!actorTransformService.HasActor(ActorType.Player, out playerProvider))
-            {
-                actorTransformService.OnActorAdded += UpdateActor;
-            }
+            actorTransformService.HasActor(ActorType.Player, out playerProvider);//rebuild
+            actorTransformService.HasActor(ActorType.Camera, out cameraProvider);//rebuild
+            actorTransformService.OnActorAdded += UpdateActor;
         }
 
         protected override void OnRelease()
         {
             actorTransformService.OnActorAdded -= UpdateActor;
         }
-        
+
         private void UpdateActor(ActorType actorType, IMovementProvider movementProvider)
         {
-            if (actorType == ActorType.Player)
+            switch (actorType)
             {
-                playerProvider = movementProvider;
+                case ActorType.Player:
+                    playerProvider = movementProvider;
+                    break;
+                case ActorType.Camera:
+                    cameraProvider = movementProvider;
+                    break;
             }
         }
 
@@ -63,7 +70,7 @@ namespace WorkShop.Components.Controller
                 model.Grounded = playerProvider.IsGrounded;
                 model.Velocity = playerProvider.Velocity;
             }
-            
+
             if (model.Grounded)
             {
                 if (verticalVelocity < 0.0f)
@@ -119,12 +126,34 @@ namespace WorkShop.Components.Controller
             {
                 model.Speed = targetSpeed;
             }
+
             model.InputMagnitude = inputModel.AnalogMovement
                 ? inputModel.Move.magnitude
                 : DefaultMagnitude;
             model.MoveDirection = inputModel.Move;
 
-            moveComponent.Move(deltaTime, model.MoveDirection);
+            
+            Vector3 inputDirection = new Vector3(model.MoveDirection.x, 0.0f, model.MoveDirection.y).normalized;
+
+        
+            if (model.MoveDirection != Vector2.zero)
+            {
+                targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                                 cameraProvider.Angles.y;
+                float rotation = Mathf.SmoothDampAngle(playerProvider.Angles.y, targetRotation, ref rotationVelocity,
+                    model.RotationSmoothTime);
+
+                model.Rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            }
+
+
+            Vector3 targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
+
+
+            var direction = targetDirection.normalized * (model.Speed * deltaTime) +
+                    new Vector3(0.0f, model.VerticalVelocity, 0.0f) * deltaTime;
+            
+            moveComponent.Move(deltaTime,  direction);
         }
     }
 }

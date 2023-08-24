@@ -19,6 +19,7 @@ namespace WorkShop.Models.TransformModels
         float InputMagnitude { get; }
         float VerticalVelocity { get; }
         bool Grounded { get; }
+        Quaternion Rotation { get; }
     }
 
     public interface ITransformModel :IBaseTransformModel, ITransformModelObserver
@@ -30,6 +31,6 @@ namespace WorkShop.Models.TransformModels
         new float InputMagnitude { get; set; }
         new float VerticalVelocity { get; set; }
         Vector3 Velocity { get; set; }
-
+        Quaternion Rotation { get; set; }
     }
 }

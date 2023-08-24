@@ -29,7 +29,7 @@ namespace WorkShop.View
 
         protected override void OnCommandSet(IPlayerCommand command)
         {
-            command.RegisterMonoProvider(movementProvider);
+            command.ActorTransformCommand.RegisterMonoProvider(movementProvider);
         }
     }
 }

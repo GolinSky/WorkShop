@@ -21,6 +21,7 @@ namespace WorkShop.Models.Camera
     public class CameraModel : Model, ICameraModel
     {
         public event Action<Vector3> OnPositionChanged;
+        public event Action<Vector3> OnDirectionChanged;
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
         public Vector3 LookAtPosition { get; set; }
@@ -41,6 +42,11 @@ namespace WorkShop.Models.Camera
             Position = position;
             Direction = direction;
             OnPositionChanged?.Invoke(position);
+        }
+
+        public void UpdateDirection(Vector3 direction)
+        {
+            OnDirectionChanged?.Invoke(direction);
         }
     }
 }
