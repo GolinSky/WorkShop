@@ -3,10 +3,12 @@ using LightWeightFramework.Controller;
 using LightWeightFramework.Model;
 using UnityEngine;
 using WorkShop.Controllers;
+using WorkShop.Controllers.AirCraft;
 using WorkShop.Controllers.Camera;
 using WorkShop.Controllers.Input;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
+using WorkShop.Models.AirCraft;
 using WorkShop.Models.Camera;
 using WorkShop.Models.Input;
 
@@ -22,7 +24,8 @@ namespace WorkShop.Launcher
             {
                 { CreateEntity<PlayerController, PlayerModel>(gameObserver) },
                 { CreateEntity<CameraController, CameraModel>(gameObserver) },
-                { CreateEntity<InputController, InputModel>(gameObserver) }
+                { CreateEntity<InputController, InputModel>(gameObserver) },
+                { CreateEntity<AirCraftController, AirCraftModel>(gameObserver)}
             };
         }
 
@@ -34,7 +37,5 @@ namespace WorkShop.Launcher
             var controller = gameObserver.Factory.CreateController<TController, TModel>(model);
             return controller;
         }
-        
-
     }
 }

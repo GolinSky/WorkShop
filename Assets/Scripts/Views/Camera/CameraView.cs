@@ -4,7 +4,7 @@ using WorkShop.Models.Camera;
 using WorkShop.LightWeightFramework;
 using WorkShop.MonoProviders;
 
-namespace WorkShop.View
+namespace WorkShop.Views
 {
     public class CameraView : View<ICameraModelObserver, ICameraCommand>, IMovementProvider
     {

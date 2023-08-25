@@ -3,7 +3,7 @@ using WorkShop.LightWeightFramework;using WorkShop.Models;
 using WorkShop.Models.TransformModels;
 using WorkShop.MonoProviders;
 
-namespace WorkShop.View
+namespace WorkShop.Views
 {
     public class PlayerView : View<IPlayerModelObserver, IPlayerCommand>
     {

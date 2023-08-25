@@ -42,11 +42,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b2ed862b572bb094daa32b9d01f613e0
-    m_Address: OldPlayer
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: deef1fabc70bb614d8c3fc76453808ce
     m_Address: Player
     m_ReadOnly: 0
@@ -59,6 +54,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d1e8fd5487afcc84781f14cc55f1f552
     m_Address: TransformModel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d35156f5eaf729c46bdd6ed010170567
+    m_Address: AirCraftController
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c098ca8604ff914d893904eb806d688
+    m_Address: AirCraftModel
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

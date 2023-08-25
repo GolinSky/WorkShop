@@ -1,7 +1,6 @@
 using UnityEngine;
 using WorkShop.LightWeightFramework.Factory;
 using WorkShop.LightWeightFramework.Game;
-using WorkShop.LightWeightFramework.Repository;
 using WorkShop.Repository;
 
 namespace WorkShop.Launcher

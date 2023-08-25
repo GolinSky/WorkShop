@@ -8,8 +8,10 @@ namespace WorkShop.Repository
     {
         public TSource Load<TSource>(string key) where TSource : Object
         {
-            var obj = Addressables.LoadAssetAsync<TSource>(key).WaitForCompletion();
-            return obj;
+#if UNITY_EDITOR
+            Debug.Log($"Load {typeof(TSource)} with key:{key}");
+#endif
+            return Addressables.LoadAssetAsync<TSource>(key).WaitForCompletion();
         }
     }
 }

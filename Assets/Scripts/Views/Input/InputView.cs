@@ -3,7 +3,8 @@ using UnityEngine.InputSystem;
 using WorkShop.Commands;
 using WorkShop.Models.Input;
 using WorkShop.LightWeightFramework;
-namespace WorkShop.View
+
+namespace WorkShop.Views
 {
     public class InputView : View<IInputModelObserver, IInputCommand>
     {
