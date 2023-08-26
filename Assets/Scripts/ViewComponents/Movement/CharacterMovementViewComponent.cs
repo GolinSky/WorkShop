@@ -32,6 +32,7 @@ namespace WorkShop.ViewComponents.Movement
         {
             transform.SetParent(parent);
             transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
         }
 
         protected override void ChangeDirection(Vector3 direction)
