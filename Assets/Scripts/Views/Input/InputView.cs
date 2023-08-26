@@ -28,10 +28,14 @@ namespace WorkShop.Views
         {
             Command.SprintInput(value.isPressed);
         }
+
+        public void OnInteract(InputValue value)
+        {
+            Command.InteractInput(value.isPressed);
+        }
 #endif
-
-
-        private void SetCursorState(bool newState)
+        
+        private void SetCursorState(bool newState)// move from this to controller
         {
             Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
         }

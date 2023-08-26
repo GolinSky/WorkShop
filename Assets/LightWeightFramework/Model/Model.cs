@@ -7,7 +7,6 @@ namespace LightWeightFramework.Model
     {
         private List<IModel> CurrentModels { get; } = new List<IModel>();
 
-        public IModelObserver ModelObserver => this;
         public void Init()
         {
             OnInit();

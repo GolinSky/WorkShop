@@ -38,6 +38,11 @@ namespace WorkShop.Controllers.Input
             Model.Sprint = newSprintState;
         }
         
+        public void InteractInput(bool interactState)
+        {
+            Model.Interact = interactState;
+        }
+        
         public override ICommand ConstructCommand()
         {
             return new InputCommand(this, GameObserver);

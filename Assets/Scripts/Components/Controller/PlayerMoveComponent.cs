@@ -1,4 +1,3 @@
-using GofPatterns.Patterns.Behavioral;
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
@@ -169,6 +168,11 @@ namespace WorkShop.Components.Controller
                 model.Grounded = playerProvider.IsGrounded;
                 model.Velocity = playerProvider.Velocity;
             }
+        }
+
+        public void SetParent(Transform vehicleTransform)
+        {
+            model.SetParent(vehicleTransform);
         }
     }
 }

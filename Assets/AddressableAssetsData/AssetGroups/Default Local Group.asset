@@ -67,6 +67,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d123a3b2d4ecaef40820eb09e6673a77
+    m_Address: InteractionUiController
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d300614495ac8214591eaea525e0decf
+    m_Address: InteractionUiModel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e03658924e4dbcb419c033662cf710a8, type: 2}
   m_SchemaSet:

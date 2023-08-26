@@ -5,8 +5,9 @@ namespace WorkShop.Models.TransformModels
 {
     public interface ITransformModelObserver : IBaseTransformModelObserver
     {
-        event Action OnJump; 
-
+        event Action OnJump;
+        event Action<Transform> OnParentSet;
+        
         float JumpHeight { get; }
         float Gravity { get; }
         float JumpTimeout { get; }
@@ -26,5 +27,6 @@ namespace WorkShop.Models.TransformModels
         new float InputMagnitude { get; set; }
         Vector3 Velocity { get; set; }
         new Quaternion Rotation { get; set; }
+        void SetParent(Transform transform);
     }
 }

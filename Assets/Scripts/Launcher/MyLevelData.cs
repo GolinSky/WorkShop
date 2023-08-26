@@ -6,11 +6,13 @@ using WorkShop.Controllers;
 using WorkShop.Controllers.AirCraft;
 using WorkShop.Controllers.Camera;
 using WorkShop.Controllers.Input;
+using WorkShop.Controllers.Ui.Interaction;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
 using WorkShop.Models.AirCraft;
 using WorkShop.Models.Camera;
 using WorkShop.Models.Input;
+using WorkShop.Models.Ui.InteractionUiModel;
 
 namespace WorkShop.Launcher
 {
@@ -25,7 +27,8 @@ namespace WorkShop.Launcher
                 { CreateEntity<PlayerController, PlayerModel>(gameObserver) },
                 { CreateEntity<CameraController, CameraModel>(gameObserver) },
                 { CreateEntity<InputController, InputModel>(gameObserver) },
-                { CreateEntity<AirCraftController, AirCraftModel>(gameObserver)}
+                { CreateEntity<AirCraftController, AirCraftModel>(gameObserver)},
+                { CreateEntity<InteractionUiController, InteractionUiModel>(gameObserver)}
             };
         }
 

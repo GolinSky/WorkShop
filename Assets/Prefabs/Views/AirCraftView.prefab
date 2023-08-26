@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2393926969518840420}
   - component: {fileID: -4283824283263733814}
   - component: {fileID: 6913616822998578648}
-  m_Layer: 0
+  - component: {fileID: 6267094866687547723}
+  m_Layer: 6
   m_Name: AirCraftView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,6 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4391466688823280815}
+  - {fileID: 9096293356605883845}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-4283824283263733814
@@ -48,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewComponents: []
   rigidbodyBehaviour: {fileID: 6913616822998578648}
+  playerSitTransform: {fileID: 9096293356605883845}
 --- !u!54 &6913616822998578648
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75,6 +78,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6267094866687547723
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131336919638177205}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.9167404, y: 1.05957, z: 9.976934}
+  m_Center: {x: 0.03096199, y: 0.10231501, z: 1.0189457}
 --- !u!1 &4139826831762130135
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,8 +110,7 @@ GameObject:
   - component: {fileID: 4391466688823280815}
   - component: {fileID: 1974620492569185255}
   - component: {fileID: 8212288180251474619}
-  - component: {fileID: 5454745962459777147}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,25 +182,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5454745962459777147
-MeshCollider:
+--- !u!1 &8017323533481531833
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4139826831762130135}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 86bd0db0604923d4db316717482aeb44, type: 3}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9096293356605883845}
+  m_Layer: 6
+  m_Name: PlayerSitTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9096293356605883845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017323533481531833}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2393926969518840420}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

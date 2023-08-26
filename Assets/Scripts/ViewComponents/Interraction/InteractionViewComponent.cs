@@ -37,7 +37,11 @@ namespace WorkShop.ViewComponents
             }
             for (var i = 0; i < numColliders; i++)
             {
-                if (results[i] is IInteractable interactable)
+                Debug.DrawLine(transform.position, results[i].transform.position, Color.red);
+
+                // if (results[i] is IInteractable interactable)
+                var interactable = results[i].GetComponent<IInteractable>();
+                if (interactable != null)
                 {
                    bool isSuccess = interactable.TryInteract();
                    if (isSuccess)

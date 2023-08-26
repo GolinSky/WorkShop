@@ -10,10 +10,28 @@ namespace WorkShop.ViewComponents.Movement
         //  QueryTriggerInteraction.Ignore);
 
         public override Vector3 Velocity => target.velocity;
+
+        protected override void OnInit()
+        {
+            base.OnInit();
+            Model.OnParentSet += SetParent;
+        }
         
+        protected override void OnRelease()
+        {
+            base.OnRelease();
+            Model.OnParentSet -= SetParent;
+        }
+
         protected override void ChangePosition(Vector3 position)
         {
            
+        }
+        
+        private void SetParent(Transform parent)
+        {
+            transform.SetParent(parent);
+            transform.localPosition = Vector3.zero;
         }
 
         protected override void ChangeDirection(Vector3 direction)

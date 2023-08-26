@@ -11,6 +11,7 @@ namespace WorkShop.Commands
         void LookInput(Vector2 newLookDirection);
         void JumpInput(bool newJumpState);
         void SprintInput(bool newSprintState);
+        void InteractInput(bool newSprintState);
     }
 
     public class InputCommand : Command<InputController>, IInputCommand
@@ -37,6 +38,11 @@ namespace WorkShop.Commands
         public void SprintInput(bool newSprintState)
         {
             Controller.SprintInput(newSprintState);
+        }
+
+        public void InteractInput(bool interactState)
+        {
+            Controller.InteractInput(interactState);
         }
     }
 }

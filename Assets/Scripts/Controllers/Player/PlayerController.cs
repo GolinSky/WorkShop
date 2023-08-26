@@ -8,6 +8,7 @@ using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models;
 using WorkShop.Models.Input;
 using WorkShop.Models.TransformModels;
+using WorkShop.Services.Interaction;
 using WorkShop.Services.Player;
 using WorkShop.Strategy;
 
@@ -16,6 +17,7 @@ namespace WorkShop.Controllers
     public class PlayerController: Controller<PlayerModel>, ITick
     {
         private IPlayerControlService playerControlService;
+        private IVehicleTransformService vehicleTransformService;
         private IInputModelObserver inputModel;
         private PlayerMoveComponent playerMoveComponent;
         private AnimationComponent animationComponent;
@@ -44,6 +46,7 @@ namespace WorkShop.Controllers
             base.OnInit();
             defaultMovementStrategy = new DefaultMovementStrategy();
             playerControlService = GetService<IPlayerControlService>();
+            vehicleTransformService = GetService<IVehicleTransformService>();
             OnControlStateChanged(playerControlService.CurrentState);
             playerControlService.OnControlStateChanged += OnControlStateChanged;
         }
@@ -53,7 +56,6 @@ namespace WorkShop.Controllers
             base.OnRelease();
             playerControlService.OnControlStateChanged -= OnControlStateChanged;
         }
-
         
         private void OnControlStateChanged(PlayerControlState controlState)
         {
@@ -61,9 +63,16 @@ namespace WorkShop.Controllers
             {
                 case PlayerControlState.ThirdPerson:
                     playerMoveComponent.SetStrategy(thirdPersonMovementStrategy);
+                    animationComponent.SetBlock(false);
                     break;
                 case PlayerControlState.AirCraft:
+                    var vehicleTransform = vehicleTransformService.CurrentVehicleTransform;
+                    if (vehicleTransform != null)
+                    {
+                        playerMoveComponent.SetParent(vehicleTransform);
+                    }
                     playerMoveComponent.SetStrategy(defaultMovementStrategy);
+                    animationComponent.SetBlock(true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(controlState), controlState, null);
@@ -75,6 +84,8 @@ namespace WorkShop.Controllers
             if(inputModel == null) return;
             
             playerMoveComponent.Update(deltaTime);
+            
+     
             animationComponent.Update(deltaTime);
         }
         

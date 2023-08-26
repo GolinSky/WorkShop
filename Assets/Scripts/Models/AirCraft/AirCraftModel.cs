@@ -1,6 +1,5 @@
 using LightWeightFramework.Model;
 using UnityEngine;
-using UnityEngine.Serialization;
 using WorkShop.Models.TransformModels;
 
 namespace WorkShop.Models.AirCraft

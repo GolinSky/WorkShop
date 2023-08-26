@@ -1,6 +1,7 @@
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Service;
 using WorkShop.Services.Cursor;
+using WorkShop.Services.Interaction;
 using WorkShop.Services.Player;
 
 namespace WorkShop.Launcher
@@ -12,7 +13,9 @@ namespace WorkShop.Launcher
             new InputService(),
             new ActorTransformService(),
             new CursorService(),
-            new PlayerControlService()
+            new PlayerControlService(),
+            new InteractionService(), 
+            new VehicleTransformService()
         };
     }
 }

@@ -18,6 +18,7 @@ namespace WorkShop.Components.Controller
         private ITransformModelObserver transformModelObserver;
         private float animationBlend;
         private float fallTimeoutDelta;
+        private bool isBlocked;
 
         public AnimationComponent(PlayerModel playerModel, IInputModelObserver inputModel)
         {
@@ -45,6 +46,8 @@ namespace WorkShop.Components.Controller
 
         public void Update(float deltaTime)
         {
+            if(isBlocked) return;
+            
             float targetSpeed = inputModel.Move == Vector2.zero
                 ? ZeroSpeed
                 : inputModel.Sprint
@@ -77,6 +80,23 @@ namespace WorkShop.Components.Controller
                 }
             }
             
+            model.InvokeUpdateEvent();
+        }
+
+        public void SetBlock(bool isBlocked)
+        {
+            this.isBlocked = isBlocked;
+            if (isBlocked)
+            {
+                Reset();
+            }
+        }
+
+        private void Reset()
+        {
+            model.IsFall = false;
+            model.IsJumped = false;
+            model.AnimationBlend = default;
             model.InvokeUpdateEvent();
         }
     }

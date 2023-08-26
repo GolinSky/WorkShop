@@ -10,6 +10,7 @@ namespace WorkShop.Models.TransformModels
         public event Action<Vector3> OnPositionChanged;
         public event Action<Vector3> OnDirectionChanged;
         public event Action OnJump;
+        public event Action<Transform> OnParentSet;
 
         [field: SerializeField] public float JumpHeight { get; private set; }
         [field: SerializeField] public float Gravity { get; private set; }
@@ -20,6 +21,8 @@ namespace WorkShop.Models.TransformModels
         [field: SerializeField] public float SprintSpeed { get; private set; }
 
         public Quaternion Rotation { get; set; }
+  
+
         public Vector3 Velocity { get; set; }
         public float Speed { get; set; }
         public float InputMagnitude { get; set; }
@@ -38,6 +41,11 @@ namespace WorkShop.Models.TransformModels
         public void UpdateDirection(Vector3 direction)
         {
             OnDirectionChanged?.Invoke(direction);
+        }
+        
+        public void SetParent(Transform transform)
+        {
+            OnParentSet?.Invoke(transform);
         }
     }
 }

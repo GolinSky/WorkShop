@@ -14,6 +14,7 @@ namespace WorkShop.Models.Input
 
         bool CursorLocked { get; }
         bool CursorInputForLook { get; }
+        bool Interact { get; }
     }
 
     [CreateAssetMenu(fileName = "InputModel", menuName = "Models/InputModel", order = 1)]
@@ -23,6 +24,8 @@ namespace WorkShop.Models.Input
         public Vector2 Look { get; set; }
         public bool Jump { get; set; }
         public bool Sprint { get; set; }
+        public bool Interact { get; set; }
+
 
         [field: SerializeField] public bool AnalogMovement { get; private set; }
         [field: SerializeField] public bool CursorLocked { get; private set; }
