@@ -73,7 +73,7 @@ namespace WorkShop.LightWeightFramework.Game
                     views.Add(view);
                     if (view is ICommandInvoker commandInvoker)
                     {
-                        commandInvoker.SetCommand(entity.GetCommand());
+                        commandInvoker.SetCommand(entity.ConstructCommand());
                     }
                 }
             }

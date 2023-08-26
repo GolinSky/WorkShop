@@ -11,7 +11,8 @@ namespace WorkShop.Launcher
         {
             new InputService(),
             new ActorTransformService(),
-            new CursorService()
+            new CursorService(),
+            new PlayerControlService()
         };
     }
 }

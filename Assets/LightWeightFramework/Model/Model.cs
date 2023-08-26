@@ -5,8 +5,9 @@ namespace LightWeightFramework.Model
 {
     public abstract class Model:ScriptableObject, IModel
     {
-        protected virtual List<IModel> CurrentModels { get; } = new List<IModel>(); 
-        
+        private List<IModel> CurrentModels { get; } = new List<IModel>();
+
+        public IModelObserver ModelObserver => this;
         public void Init()
         {
             OnInit();
@@ -14,6 +15,8 @@ namespace LightWeightFramework.Model
         
         public TModelObserver GetModelObserver<TModelObserver>() where TModelObserver : IModelObserver
         {
+            if (this is TModelObserver modelObserver) return modelObserver;//fix this - create inner model
+            
             return GetModelInternal<TModelObserver>();
         }
 
@@ -36,6 +39,13 @@ namespace LightWeightFramework.Model
             
         }
 
+
+        protected TModel AddInnerModel<TModel>(TModel model) where TModel : Object, IModel
+        {
+            var instancedModel = Instantiate(model);
+            CurrentModels.Add(instancedModel);
+            return instancedModel;
+        }
         protected virtual void OnInit(){}
     }
 }

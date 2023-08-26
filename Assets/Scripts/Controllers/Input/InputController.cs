@@ -38,7 +38,7 @@ namespace WorkShop.Controllers.Input
             Model.Sprint = newSprintState;
         }
         
-        public override ICommand GetCommand()
+        public override ICommand ConstructCommand()
         {
             return new InputCommand(this, GameObserver);
         }

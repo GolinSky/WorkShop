@@ -2,6 +2,7 @@ using UnityEngine;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models.TransformModels;
+using WorkShop.Strategy;
 using Component = WorkShop.LightWeightFramework.Components.Component;
 
 namespace WorkShop.Components.Controller
@@ -10,7 +11,7 @@ namespace WorkShop.Components.Controller
     {
         void Move(float deltaTime, Vector3 direction);
     }
-    public class MoveComponent:Component, IMoveComponent
+    public class MoveComponent:Component, IMoveComponent, IMovementStrategy
     {
         private Vector3 position;
         private readonly IBaseTransformModel model;

@@ -1,3 +1,4 @@
+using GofPatterns.Patterns.Behavioral;
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.Models;
@@ -5,6 +6,7 @@ using WorkShop.Models.Input;
 using WorkShop.Models.TransformModels;
 using WorkShop.MonoProviders;
 using WorkShop.Services.Player;
+using WorkShop.Strategy;
 using Component = WorkShop.LightWeightFramework.Components.Component;
 
 namespace WorkShop.Components.Controller
@@ -17,11 +19,11 @@ namespace WorkShop.Components.Controller
         private const float SpeedOffset = 0.1f;
 
         private readonly ITransformModel model;
-        private readonly IMoveComponent moveComponent;
         private readonly IInputModelObserver inputModel;
         private IMovementProvider playerProvider;
         private IMovementProvider cameraProvider;
         private IActorTransformService actorTransformService;
+        private IMovementStrategy movementStrategy;
 
         private float verticalVelocity;
         private float jumpTimeoutDelta;
@@ -29,10 +31,10 @@ namespace WorkShop.Components.Controller
         private float rotationVelocity;
         private float speed;
 
-        public PlayerMoveComponent(PlayerModel model, IMoveComponent moveComponent, IInputModelObserver inputModel)
+        public PlayerMoveComponent(PlayerModel model, IInputModelObserver inputModel)
         {
+            movementStrategy = new DefaultMovementStrategy();
             this.model = model.GetModel<ITransformModel>();
-            this.moveComponent = moveComponent;
             this.inputModel = inputModel;
         }
 
@@ -50,6 +52,12 @@ namespace WorkShop.Components.Controller
             actorTransformService.OnActorAdded -= UpdateActor;
         }
 
+
+        public void SetStrategy(IMovementStrategy strategy)
+        {
+            movementStrategy = strategy;
+        }
+        
         private void UpdateActor(ActorType actorType, IMovementProvider movementProvider)
         {
             switch (actorType)
@@ -69,7 +77,7 @@ namespace WorkShop.Components.Controller
             CalculateGravity(deltaTime);
             CalculateSpeed(deltaTime);
             var direction = CalculateDirection(deltaTime);
-            moveComponent.Move(deltaTime,  direction);
+            movementStrategy.Move(deltaTime, direction);
         }
 
         private Vector3 CalculateDirection(float deltaTime)

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c8fbf5708928f44a2ce39c78c1645d, type: 3}
   m_Name: PlayerModel
   m_EditorClassIdentifier: 
-  <TransformModel>k__BackingField: {fileID: 11400000, guid: d1e8fd5487afcc84781f14cc55f1f552, type: 2}
-  <AnimationModel>k__BackingField: {fileID: 11400000, guid: 0b10c721d44d0cb4387293f9b2a92626, type: 2}
+  transformModel: {fileID: 11400000, guid: d1e8fd5487afcc84781f14cc55f1f552, type: 2}
+  animationModel: {fileID: 11400000, guid: 0b10c721d44d0cb4387293f9b2a92626, type: 2}

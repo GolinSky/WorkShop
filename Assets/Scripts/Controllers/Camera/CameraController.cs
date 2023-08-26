@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using LightWeightFramework.Controller;
 using UnityEngine;
 using WorkShop.Commands.Camera;
 using WorkShop.Components.Controller;
 using WorkShop.LightWeightFramework.Command;
-using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models.Camera;
 using WorkShop.Models.Input;
@@ -26,29 +24,24 @@ namespace WorkShop.Controllers.Camera
         private float currentX = 0.0f;
         private float currentY = 0.0f;
         private float prevDistance;
-   
-
+        
 
         public override string Id => "Camera";
 
         public CameraController(CameraModel model) : base(model)
         {
         }
-
-        protected override List<IComponent> BuildsComponents()
+        
+        protected override void OnBeforeComponentsInitialed()
         {
-            var components = base.BuildsComponents();
-            components.Add(new UpdateComponent(this));
-            components.Add(new MoveComponent(Model));
-
-            return components;
+            base.OnBeforeComponentsInitialed();
+            moveComponent = AddComponent(new MoveComponent(Model));
         }
 
         protected override void OnInit()
         {
             base.OnInit();
             playerService = GetService<IActorTransformService>();
-            moveComponent = GetComponent<MoveComponent>();
             inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
             playerProvider = playerService.GetActorProvider(ActorType.Player);
         }
@@ -65,7 +58,7 @@ namespace WorkShop.Controllers.Camera
             moveComponent.SetPosition(cameraPosition, Vector3.zero);
         }
 
-        public override ICommand GetCommand()
+        public override ICommand ConstructCommand()
         {
             return new CameraCommand(this, GameObserver);
         }

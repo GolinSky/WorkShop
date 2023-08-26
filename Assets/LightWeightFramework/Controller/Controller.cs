@@ -1,23 +1,22 @@
 using System.Collections.Generic;
 using LightWeightFramework.Model;
+using WorkShop.Components.Controller;
 using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Service;
+using WorkShop.LightWeightFramework.UpdateService;
 
 namespace LightWeightFramework.Controller
 {
     public abstract class Controller<TModel>:IController
         where TModel : IModel
     {
-        private IEnumerable<IComponent> components;
+        private List<IComponent> components = new List<IComponent>();
 
         public virtual string Id => GetType().Name;
         protected TModel Model { get; private set; }
-        public virtual ICommand GetCommand()
-        {
-            throw new System.NotImplementedException();
-        }
+    
 
         IModelObserver IController.Model => Model;
         protected IGameObserver GameObserver { get; private set; }
@@ -31,7 +30,6 @@ namespace LightWeightFramework.Controller
         {
             GameObserver = gameObserver;
             OnBeforeComponentsInitialed();
-            components = BuildsComponents();
             foreach (var component in components)
             {
                 component.Init(gameObserver);
@@ -44,9 +42,17 @@ namespace LightWeightFramework.Controller
             OnRelease();
         }
         
-        protected virtual List<IComponent> BuildsComponents()
+
+        protected IComponent AddComponent(IComponent component)
         {
-            return new List<IComponent>();
+            components.Add(component);
+            return component;
+        }
+        
+        protected TComponent AddComponent<TComponent>(TComponent component) where TComponent : IComponent
+        {
+            components.Add(component);
+            return component;
         }
         
         public TComponent GetComponent<TComponent>() where TComponent : IComponent
@@ -71,9 +77,20 @@ namespace LightWeightFramework.Controller
         {
             return GameObserver.ServiceHub.Get<TService>();
         }
+        public virtual ICommand ConstructCommand()
+        {
+            throw new System.NotImplementedException();
+        }
         
         protected virtual void OnInit(){}
-        protected virtual void OnBeforeComponentsInitialed(){}
+
+        protected virtual void OnBeforeComponentsInitialed()
+        {
+            if (this is ITick tick)
+            {
+                AddComponent(new UpdateComponent(tick));
+            }
+        }
         protected virtual void OnRelease(){}
     }
 }

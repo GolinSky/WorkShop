@@ -1,4 +1,3 @@
-using GofPatterns.Patterns.Behavioral.Observer.Custom;
 using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Service;
@@ -26,4 +25,6 @@ namespace WorkShop.Components.Controller
             tickService.RemoveObserver(Tick);
         }
     }
+
+    
 }

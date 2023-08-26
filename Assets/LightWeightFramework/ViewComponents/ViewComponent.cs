@@ -32,4 +32,5 @@ namespace WorkShop.LightWeightFramework.ViewComponents
             Model = ModelObserver.GetModelObserver<TModel>();
         }
     }
+    
 }

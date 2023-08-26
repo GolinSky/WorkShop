@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175620de45418f94c8728648a985a476, type: 3}
   m_Name: AirCraftModel
   m_EditorClassIdentifier: 
+  transformModel: {fileID: 11400000, guid: d1e8fd5487afcc84781f14cc55f1f552, type: 2}

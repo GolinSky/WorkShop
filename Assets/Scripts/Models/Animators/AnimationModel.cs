@@ -17,7 +17,6 @@ namespace WorkShop.Models.Animators
 
         public ITransformModelObserver CurrentTransformModelObserver => CurrentTransformModel;
 
-        public Vector2 MoveDirection { get; set; }
         public float AnimationBlend { get; set; }
         public bool IsJumped { get; set; }
         public bool IsFall { get; set; }

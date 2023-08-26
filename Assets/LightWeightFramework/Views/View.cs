@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using LightWeightFramework.Model;
 using UnityEngine;
 using WorkShop.LightWeightFramework.Command;
@@ -15,7 +16,7 @@ namespace WorkShop.LightWeightFramework
             ModelObserver = model;
             for (var i = 0; i < viewComponents.Length; i++)
             {
-                viewComponents[i].Init(this);
+                InitViewComponent(viewComponents[i]);
             }
         }
 
@@ -23,9 +24,25 @@ namespace WorkShop.LightWeightFramework
         {
             for (var i = 0; i < viewComponents.Length; i++)
             {
-                viewComponents[i].Release();
+                ReleaseViewComponent(viewComponents[i]);
             }
         }
+
+        private void InitViewComponent(ViewComponent viewComponent)
+        {
+            viewComponent.Init(this);
+            OnInitViewComponent(viewComponent);
+        }
+
+        private void ReleaseViewComponent(ViewComponent viewComponent)
+        {
+            viewComponent.Release();
+            OnReleaseViewComponent(viewComponent);
+        }
+
+        protected virtual void OnInitViewComponent(ViewComponent viewComponent){}
+        protected virtual void OnReleaseViewComponent(ViewComponent viewComponent){}
+        
     }
 
     public abstract class View<TModel> : View
@@ -55,13 +72,28 @@ namespace WorkShop.LightWeightFramework
         where TCommand : ICommand
     {
         protected TCommand Command { get; private set; }
+        private List<ICommandInvoker> commandInvokers = new List<ICommandInvoker>();
         
         void ICommandInvoker.SetCommand(ICommand command)
         {
             Command = (TCommand)command;
             OnCommandSet(Command);
+            foreach (var commandInvoker in commandInvokers)
+            {
+                commandInvoker.SetCommand(Command);
+            }
+        }
+
+        protected sealed override void OnInitViewComponent(ViewComponent viewComponent)
+        {
+            base.OnInitViewComponent(viewComponent);
+            if (viewComponent is ICommandInvoker commandInvoker)
+            {
+                commandInvokers.Add(commandInvoker);
+            }
         }
 
         protected abstract void OnCommandSet(TCommand command);
+        
     }
 }

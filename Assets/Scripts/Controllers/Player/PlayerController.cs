@@ -1,21 +1,26 @@
-using System.Collections.Generic;
+using System;
 using LightWeightFramework.Controller;
 using UnityEngine;
 using WorkShop.Commands.Player;
 using WorkShop.Components.Controller;
 using WorkShop.LightWeightFramework.Command;
-using WorkShop.LightWeightFramework.Components;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models;
 using WorkShop.Models.Input;
+using WorkShop.Models.TransformModels;
+using WorkShop.Services.Player;
+using WorkShop.Strategy;
 
 namespace WorkShop.Controllers
 {
     public class PlayerController: Controller<PlayerModel>, ITick
     {
-        private PlayerMoveComponent moveComponent;
-        private AnimationComponent animationComponent;
+        private IPlayerControlService playerControlService;
         private IInputModelObserver inputModel;
+        private PlayerMoveComponent playerMoveComponent;
+        private AnimationComponent animationComponent;
+        private IMovementStrategy thirdPersonMovementStrategy;
+        private IMovementStrategy defaultMovementStrategy;
         private Vector3 direction;
         private float currentY;
 
@@ -29,36 +34,51 @@ namespace WorkShop.Controllers
         {
             base.OnBeforeComponentsInitialed();
             inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
+            playerMoveComponent = AddComponent(new PlayerMoveComponent(Model, inputModel));
+            animationComponent = AddComponent(new AnimationComponent(Model, inputModel));
+            thirdPersonMovementStrategy = AddComponent(new MoveComponent(Model.GetModel<ITransformModel>()));
         }
 
         protected override void OnInit()
         {
             base.OnInit();
-            moveComponent = GetComponent<PlayerMoveComponent>();
-            animationComponent = GetComponent<AnimationComponent>();
+            defaultMovementStrategy = new DefaultMovementStrategy();
+            playerControlService = GetService<IPlayerControlService>();
+            OnControlStateChanged(playerControlService.CurrentState);
+            playerControlService.OnControlStateChanged += OnControlStateChanged;
         }
 
-
-        protected override List<IComponent> BuildsComponents()
+        protected override void OnRelease()
         {
-            var moveComponent = new MoveComponent(Model.TransformModel);
-            var components = base.BuildsComponents();
-            components.Add(new UpdateComponent(this));
-            components.Add(moveComponent);
-            components.Add(new AnimationComponent(Model, inputModel));
-            components.Add(new PlayerMoveComponent(Model, moveComponent, inputModel));
-            return components;
+            base.OnRelease();
+            playerControlService.OnControlStateChanged -= OnControlStateChanged;
+        }
+
+        
+        private void OnControlStateChanged(PlayerControlState controlState)
+        {
+            switch (controlState)
+            {
+                case PlayerControlState.ThirdPerson:
+                    playerMoveComponent.SetStrategy(thirdPersonMovementStrategy);
+                    break;
+                case PlayerControlState.AirCraft:
+                    playerMoveComponent.SetStrategy(defaultMovementStrategy);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(controlState), controlState, null);
+            }
         }
         
         public void Notify(float deltaTime)
         {
             if(inputModel == null) return;
-     
-            moveComponent.Update(deltaTime);
+            
+            playerMoveComponent.Update(deltaTime);
             animationComponent.Update(deltaTime);
         }
         
-        public override ICommand GetCommand()
+        public override ICommand ConstructCommand()
         {
             return new PlayerCommand(this, GameObserver);
         }
