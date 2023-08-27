@@ -4,6 +4,7 @@ using WorkShop.Models.Input;
 using WorkShop.Services.Interaction;
 using WorkShop.Services.Player;
 using WorkShop.Strategy;
+using WorkShop.Utils.Timer;
 using Component = WorkShop.LightWeightFramework.Components.Component;
 
 namespace WorkShop.Components.Controller
@@ -48,12 +49,17 @@ namespace WorkShop.Components.Controller
     public class InteractionComponent:Component, IStrategyContext<IInteractionStrategy>
     {
         private const float Delay = 0.1f;
+        
         private readonly IInputModelObserver inputModelObserver;
+        private readonly ITimer timer;
         private IInteractionStrategy interactionStrategy;
         private float lastInteractionTime;
+        
         public InteractionComponent(IInputModelObserver inputModelObserver)
         {
             this.inputModelObserver = inputModelObserver;
+            timer = TimerFactory.GetTimer();
+            timer.SetTimer(Delay);
         }
         protected override void OnInit(IGameObserver gameObserver)
         {
@@ -71,9 +77,9 @@ namespace WorkShop.Components.Controller
 
         public void Update(float deltaTime)
         {
-            if (inputModelObserver.Interact && lastInteractionTime < Time.time)
+            if (inputModelObserver.Interact && timer.IsFinished)
             {
-                lastInteractionTime = Time.time + Delay;
+                timer.Start();
                 interactionStrategy.DoInteraction();
             }
         }
