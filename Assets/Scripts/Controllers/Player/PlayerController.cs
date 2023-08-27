@@ -19,10 +19,15 @@ namespace WorkShop.Controllers
         private IPlayerControlService playerControlService;
         private IVehicleTransformService vehicleTransformService;
         private IInputModelObserver inputModel;
+        private IInteractionService interactionService;
+        
         private PlayerMoveComponent playerMoveComponent;
         private AnimationComponent animationComponent;
+        private InteractionComponent interactionComponent;
         private IMovementStrategy thirdPersonMovementStrategy;
         private IMovementStrategy defaultMovementStrategy;
+        private IInteractionStrategy thirdPersonInteractionStrategy;
+        private IInteractionStrategy vehicleInteractionStrategy;
         private Vector3 direction;
         private float currentY;
 
@@ -38,6 +43,7 @@ namespace WorkShop.Controllers
             inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
             playerMoveComponent = AddComponent(new PlayerMoveComponent(Model, inputModel));
             animationComponent = AddComponent(new AnimationComponent(Model, inputModel));
+            interactionComponent = AddComponent(new InteractionComponent(inputModel));
             thirdPersonMovementStrategy = AddComponent(new MoveComponent(Model.GetModel<ITransformModel>()));
         }
 
@@ -45,8 +51,12 @@ namespace WorkShop.Controllers
         {
             base.OnInit();
             defaultMovementStrategy = new DefaultMovementStrategy();
+         
             playerControlService = GetService<IPlayerControlService>();
             vehicleTransformService = GetService<IVehicleTransformService>();
+            interactionService = GetService<IInteractionService>();
+            thirdPersonInteractionStrategy = new ThirdPersonInteractionStrategy(interactionService);
+            vehicleInteractionStrategy = new VehicleInteractionStrategy(playerControlService);
             OnControlStateChanged(playerControlService.CurrentState);
             playerControlService.OnControlStateChanged += OnControlStateChanged;
         }
@@ -59,11 +69,14 @@ namespace WorkShop.Controllers
         
         private void OnControlStateChanged(PlayerControlState controlState)
         {
+            Model.ControlState = controlState;
             switch (controlState)
             {
                 case PlayerControlState.ThirdPerson:
                     playerMoveComponent.SetStrategy(thirdPersonMovementStrategy);
                     animationComponent.SetBlock(false);
+                    playerMoveComponent.SetParent(null);
+                    interactionComponent.SetStrategy(thirdPersonInteractionStrategy);
                     break;
                 case PlayerControlState.AirCraft:
                     var vehicleTransform = vehicleTransformService.CurrentVehicleTransform;
@@ -73,6 +86,7 @@ namespace WorkShop.Controllers
                     }
                     playerMoveComponent.SetStrategy(defaultMovementStrategy);
                     animationComponent.SetBlock(true);
+                    interactionComponent.SetStrategy(vehicleInteractionStrategy);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(controlState), controlState, null);
@@ -82,11 +96,11 @@ namespace WorkShop.Controllers
         public void Notify(float deltaTime)
         {
             if(inputModel == null) return;
-            
+
+  
             playerMoveComponent.Update(deltaTime);
-            
-     
             animationComponent.Update(deltaTime);
+            interactionComponent.Update(deltaTime);
         }
         
         public override ICommand ConstructCommand()

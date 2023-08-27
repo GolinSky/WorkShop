@@ -30,6 +30,11 @@ namespace WorkShop.ViewComponents.Movement
         
         private void SetParent(Transform parent)
         {
+            if (parent == null)
+            {
+                transform.parent = null;
+                return;
+            }
             transform.SetParent(parent);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;

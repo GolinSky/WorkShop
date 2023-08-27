@@ -4,6 +4,7 @@ using WorkShop.LightWeightFramework.Command;
 using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.LightWeightFramework.ViewComponents;
 using WorkShop.Models;
+using WorkShop.Services.Player;
 
 namespace WorkShop.ViewComponents
 {
@@ -14,7 +15,6 @@ namespace WorkShop.ViewComponents
         
         private IPlayerCommand playerCommand;
         private Collider[] results = new Collider[1];
-        private bool canInteract;
         
         public void SetCommand(ICommand command)
         {
@@ -29,28 +29,25 @@ namespace WorkShop.ViewComponents
 
         public void Notify(float state)
         {
+            if(Model.ControlState != PlayerControlState.ThirdPerson) return;
+            
             int numColliders = Physics.OverlapSphereNonAlloc(transform.position, radius, results, interactionLayerMask);
 
-            if (numColliders > 0 && canInteract)
+            if (numColliders > 0)
             {
-                
-            }
-            for (var i = 0; i < numColliders; i++)
-            {
-                Debug.DrawLine(transform.position, results[i].transform.position, Color.red);
-
-                // if (results[i] is IInteractable interactable)
-                var interactable = results[i].GetComponent<IInteractable>();
-                if (interactable != null)
+                for (var i = 0; i < numColliders; i++)
                 {
-                   bool isSuccess = interactable.TryInteract();
-                   if (isSuccess)
-                   {
-                       canInteract = false;
-                       break;
-                   }
+                    Debug.DrawLine(transform.position, results[i].transform.position, Color.red);
+
+                    // if (results[i] is IInteractable interactable)
+                    var interactable = results[i].GetComponent<IInteractableProvider>();
+                    if (interactable != null)
+                    {
+                        playerCommand.RegisterInteractable(interactable.GetInteractable());
+                    }
                 }
             }
+            
         }
     }
 }

@@ -4,7 +4,7 @@ using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Service;
 using WorkShop.LightWeightFramework.UpdateService;
 
-namespace WorkShop.Commands.TickCommand
+namespace WorkShop.Commands
 {
     public interface ITickCommand : ICommand
     {

@@ -10,7 +10,7 @@ using Component = WorkShop.LightWeightFramework.Components.Component;
 
 namespace WorkShop.Components.Controller
 {
-    public class PlayerMoveComponent : Component
+    public class PlayerMoveComponent : Component, IStrategyContext<IMovementStrategy>
     {
         private const float ZeroSpeed = 0.0f;
         private const float DefaultMagnitude = 1.0f;

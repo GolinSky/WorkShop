@@ -3,12 +3,14 @@ using LightWeightFramework.Model;
 using UnityEngine;
 using WorkShop.Models.Animators;
 using WorkShop.Models.TransformModels;
+using WorkShop.Services.Player;
 
 namespace WorkShop.Models
 {
     public interface IPlayerModelObserver : IModelObserver
     {
-        
+        PlayerControlState ControlState { get; }
+
     }
 
     [Serializable]
@@ -26,5 +28,7 @@ namespace WorkShop.Models
             AddInnerModel(animationModel);
     
         }
+
+        public PlayerControlState ControlState { get; set; }
     }
 }

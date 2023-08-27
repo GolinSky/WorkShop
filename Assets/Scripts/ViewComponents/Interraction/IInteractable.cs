@@ -4,4 +4,9 @@ namespace WorkShop.ViewComponents
     {
         bool TryInteract(); //no receiver/context
     }
+
+    public interface IInteractableProvider
+    {
+        IInteractable GetInteractable();
+    }
 }

@@ -3,26 +3,47 @@ using GofPatterns.Patterns.Behavioral.Observer.Custom;
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Service;
+using WorkShop.ViewComponents;
 
 namespace WorkShop.Services.Interaction
 {
     public interface IInteractionService:IService
     {
         event Action<bool> OnInteractionChanged; 
-        void EnableInteractionState();
-        bool HasInteraction { get; }
+        void AddInteractable(IInteractable interactable);
+        bool HasInteraction(out IInteractable interactable);
     }
     
     public class InteractionService: Service, IInteractionService, ICustomObserver<float>
     {
         private const float ResetDelay = 1f;
-        
         public event Action<bool> OnInteractionChanged;
         
         private ITickService tickService;
         private float resetTime;
+        private IInteractable interactable;
+
         public bool HasInteraction { get; private set; }
         
+        public void AddInteractable(IInteractable interactable)
+        {
+            resetTime = Time.time + ResetDelay;
+            UpdateInteraction(true);
+            this.interactable = interactable;
+        }
+
+        bool IInteractionService.HasInteraction(out IInteractable interactable)
+        {
+            interactable = null;
+            if (HasInteraction)
+            {
+                interactable = this.interactable;
+                return interactable != null;
+            }
+
+            return false;
+        }
+
         protected override void OnInit(IGameObserver gameObserver)
         {
             tickService = gameObserver.ServiceHub.Get<ITickService>();
@@ -34,16 +55,12 @@ namespace WorkShop.Services.Interaction
             tickService.RemoveObserver(this);
         }
         
-        public void EnableInteractionState()
-        {
-            resetTime = Time.time + ResetDelay;
-            UpdateInteraction(true);
-        }
-        
         public void Notify(float state)
         {
             if (HasInteraction)
             {
+                //check input
+                // apply interaction
                 if (resetTime < Time.time)
                 {
                     UpdateInteraction(false);

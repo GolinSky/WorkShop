@@ -7,7 +7,7 @@ using WorkShop.ViewComponents;
 
 namespace WorkShop.Views
 {
-    public class AirCraftView:View<IAirCraftModelObserver, IAirCraftCommand>, IInteractable
+    public class AirCraftView:View<IAirCraftModelObserver, IAirCraftCommand>, IInteractableProvider
     {
         [SerializeField] private Rigidbody rigidbodyBehaviour;
         [SerializeField] private Transform playerSitTransform;
@@ -31,11 +31,12 @@ namespace WorkShop.Views
 
         protected override void OnCommandSet(IAirCraftCommand command)
         {
+            command.SetPlayerSit(playerSitTransform);
         }
-
-        public bool TryInteract()
+        
+        public IInteractable GetInteractable()
         {
-            return Command.TryInteract(playerSitTransform);
+            return Command.Interactable;//get this from model
         }
     }
 }

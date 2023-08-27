@@ -8,10 +8,11 @@ using WorkShop.Models.Input;
 using WorkShop.Models.TransformModels;
 using WorkShop.Services.Interaction;
 using WorkShop.Services.Player;
+using WorkShop.ViewComponents;
 
 namespace WorkShop.Controllers.AirCraft
 {
-    public class AirCraftController:Controller<AirCraftModel>, ITick
+    public class AirCraftController:Controller<AirCraftModel>, ITick, IInteractable
     {
         private IPlayerControlService playerControlService;
         private IInteractionService interactionService;
@@ -22,8 +23,9 @@ namespace WorkShop.Controllers.AirCraft
 
 
         private Vector3 direction;
-        
-        
+        private Transform playerSitTransform;
+
+
         public AirCraftController(AirCraftModel model) : base(model)
         {
             transformModel = Model.GetModel<ITransformModel>();
@@ -45,6 +47,7 @@ namespace WorkShop.Controllers.AirCraft
 
         public void Notify(float state)
         {
+
             if (playerControlService.CurrentState != PlayerControlState.AirCraft)
             {
                 return;
@@ -52,6 +55,8 @@ namespace WorkShop.Controllers.AirCraft
             
             if(inputModel == null) return;
 
+
+            
             direction.x = inputModel.Move.x;
             direction.z = inputModel.Move.y;
             direction.y = inputModel.Look.y + inputModel.Move.y/2.0f;
@@ -62,20 +67,25 @@ namespace WorkShop.Controllers.AirCraft
         {
             return new AirCraftCommand(this, GameObserver);
         }
+        
 
-        public bool TryInteract(Transform playerSitTransform)
+        public bool TryInteract()
         {
             if (playerControlService.CurrentState == PlayerControlState.AirCraft) return false;
 
-            interactionService.EnableInteractionState();
-            if (inputModel.Interact)
-            {
-                vehicleTransformService.UpdateCurrentVehicleTransform(playerSitTransform);
-                playerControlService.SwitchState(PlayerControlState.AirCraft);
-                return true;
-            }
+            // put context ->  PlayerControlState.AirCraft 
+            
+            // if (inputModel.Interact)
+            
+            vehicleTransformService.UpdateCurrentVehicleTransform(playerSitTransform);
+            playerControlService.SwitchState(PlayerControlState.AirCraft);
 
             return false;
+        }
+
+        public void SetPlayerSitTransform(Transform playerSitTransform)
+        {
+            this.playerSitTransform = playerSitTransform;
         }
     }
 }

@@ -2,13 +2,14 @@ using LightWeightFramework.Controller;
 using UnityEngine;
 using WorkShop.Commands;
 using WorkShop.LightWeightFramework.Command;
+using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.Models.Input;
-using WorkShop.Services.Player;
 
 namespace WorkShop.Controllers.Input
 {
-    public class InputController: Controller<InputModel>
+    public class InputController: Controller<InputModel>, ITick
     {
+        private bool resetInteract;
         public override string Id => "Input";
 
         public InputController(InputModel model) : base(model)
@@ -46,6 +47,22 @@ namespace WorkShop.Controllers.Input
         public override ICommand ConstructCommand()
         {
             return new InputCommand(this, GameObserver);
+        }
+
+        public void Notify(float state)
+        {
+            //if not fix this - use old input system instead
+            if (resetInteract)
+            {
+                Model.Interact = false;
+                resetInteract = false;
+            }
+            
+            if (Model.Interact)
+            {
+                resetInteract = true;
+            }
+
         }
     }
 }
