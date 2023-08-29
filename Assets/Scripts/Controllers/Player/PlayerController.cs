@@ -14,23 +14,23 @@ using WorkShop.Strategy;
 
 namespace WorkShop.Controllers
 {
-    public class PlayerController: Controller<PlayerModel>, ITick
+    public class PlayerController : Controller<PlayerModel>, ITick
     {
         private IPlayerControlService playerControlService;
         private IVehicleTransformService vehicleTransformService;
-        private IInputModelObserver inputModel;
         private IInteractionService interactionService;
-        
+
+        private IInputModelObserver inputModel;
+
         private PlayerMoveComponent playerMoveComponent;
         private AnimationComponent animationComponent;
         private InteractionComponent interactionComponent;
+        
         private IMovementStrategy thirdPersonMovementStrategy;
         private IMovementStrategy defaultMovementStrategy;
         private IInteractionStrategy thirdPersonInteractionStrategy;
         private IInteractionStrategy vehicleInteractionStrategy;
-        private Vector3 direction;
-        private float currentY;
-
+        
         public override string Id => "Player";
 
         public PlayerController(PlayerModel model) : base(model)
@@ -51,7 +51,7 @@ namespace WorkShop.Controllers
         {
             base.OnInit();
             defaultMovementStrategy = new DefaultMovementStrategy();
-         
+
             playerControlService = GetService<IPlayerControlService>();
             vehicleTransformService = GetService<IVehicleTransformService>();
             interactionService = GetService<IInteractionService>();
@@ -66,7 +66,7 @@ namespace WorkShop.Controllers
             base.OnRelease();
             playerControlService.OnControlStateChanged -= OnControlStateChanged;
         }
-        
+
         private void OnControlStateChanged(PlayerControlState controlState)
         {
             Model.ControlState = controlState;
@@ -92,12 +92,11 @@ namespace WorkShop.Controllers
                     throw new ArgumentOutOfRangeException(nameof(controlState), controlState, null);
             }
         }
-        
+
         public void Notify(float deltaTime)
         {
             if(inputModel == null) return;
-
-  
+            
             playerMoveComponent.Update(deltaTime);
             animationComponent.Update(deltaTime);
             interactionComponent.Update(deltaTime);

@@ -49,8 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewComponents: []
-  rigidbodyBehaviour: {fileID: 6913616822998578648}
   playerSitTransform: {fileID: 9096293356605883845}
+  rigidbody: {fileID: 6913616822998578648}
+  speed: 10
+  rotationSpeed: 0
 --- !u!54 &6913616822998578648
 Rigidbody:
   m_ObjectHideFlags: 0

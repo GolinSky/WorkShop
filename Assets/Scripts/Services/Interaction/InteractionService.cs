@@ -3,6 +3,7 @@ using GofPatterns.Patterns.Behavioral.Observer.Custom;
 using UnityEngine;
 using WorkShop.LightWeightFramework.Game;
 using WorkShop.LightWeightFramework.Service;
+using WorkShop.LightWeightFramework.UpdateService;
 using WorkShop.ViewComponents;
 
 namespace WorkShop.Services.Interaction
@@ -14,7 +15,7 @@ namespace WorkShop.Services.Interaction
         bool HasInteraction(out IInteractable interactable);
     }
     
-    public class InteractionService: Service, IInteractionService, ICustomObserver<float>
+    public class InteractionService: Service, IInteractionService, ITick
     {
         private const float ResetDelay = 1f;
         public event Action<bool> OnInteractionChanged;

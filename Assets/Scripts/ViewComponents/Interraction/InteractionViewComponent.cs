@@ -15,21 +15,33 @@ namespace WorkShop.ViewComponents
         
         private IPlayerCommand playerCommand;
         private Collider[] results = new Collider[1];
-        
+        private bool canExecute;
+
         public void SetCommand(ICommand command)
         {
             playerCommand = (IPlayerCommand)command;
             playerCommand.TickCommand.AddTickable(this);
         }
-        
+
+        protected override void OnInit()
+        {
+            base.OnInit();
+            Model.OnControlStateChanged += UpdateControlState;
+        }
+
         protected override void OnRelease()
         {
             playerCommand.TickCommand.RemoveTickable(this);
         }
+        
+        private void UpdateControlState(PlayerControlState controlState)
+        {
+            canExecute = controlState != PlayerControlState.ThirdPerson;
+        }
 
         public void Notify(float state)
         {
-            if(Model.ControlState != PlayerControlState.ThirdPerson) return;
+            if(canExecute) return;
             
             int numColliders = Physics.OverlapSphereNonAlloc(transform.position, radius, results, interactionLayerMask);
 
@@ -39,7 +51,6 @@ namespace WorkShop.ViewComponents
                 {
                     Debug.DrawLine(transform.position, results[i].transform.position, Color.red);
 
-                    // if (results[i] is IInteractable interactable)
                     var interactable = results[i].GetComponent<IInteractableProvider>();
                     if (interactable != null)
                     {
@@ -49,5 +60,6 @@ namespace WorkShop.ViewComponents
             }
             
         }
+        
     }
 }

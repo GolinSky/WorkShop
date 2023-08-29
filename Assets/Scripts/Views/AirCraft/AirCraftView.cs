@@ -9,10 +9,11 @@ namespace WorkShop.Views
 {
     public class AirCraftView:View<IAirCraftModelObserver, IAirCraftCommand>, IInteractableProvider
     {
-        [SerializeField] private Rigidbody rigidbodyBehaviour;
         [SerializeField] private Transform playerSitTransform;
+
         
         private ITransformModelObserver transformModelObserver;
+        
         protected override void OnInit(IAirCraftModelObserver model)
         {
             transformModelObserver = model.GetModelObserver<ITransformModelObserver>();
@@ -23,10 +24,10 @@ namespace WorkShop.Views
         {
             transformModelObserver.OnDirectionChanged -= OnDirectionChanged;
         }
-        
+
         private void OnDirectionChanged(Vector3 direction)
         {
-            rigidbodyBehaviour.AddForce(direction, ForceMode.Acceleration);
+
         }
 
         protected override void OnCommandSet(IAirCraftCommand command)

@@ -1819,6 +1819,7 @@ MonoBehaviour:
   - {fileID: -1429021649771434787}
   - {fileID: 7030057294693494819}
   - {fileID: 8876856951167393264}
+  meshRenderer: {fileID: 3022589814874863161}
 --- !u!114 &-1429021649771434787
 MonoBehaviour:
   m_ObjectHideFlags: 0

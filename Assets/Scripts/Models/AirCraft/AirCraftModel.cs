@@ -6,7 +6,8 @@ namespace WorkShop.Models.AirCraft
 {
     public interface IAirCraftModelObserver:IModelObserver
     {
-        
+        float Throttle { get; }
+        bool AirBrakes { get; }
     }
     
     [CreateAssetMenu(fileName = "AirCraftModel", menuName = "Models/AirCraftModel")]
@@ -20,5 +21,8 @@ namespace WorkShop.Models.AirCraft
             base.OnInit();
             AddInnerModel(transformModel);
         }
+
+        public float Throttle { get; set; }
+        public bool AirBrakes { get; set; }
     }
 }

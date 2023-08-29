@@ -9,7 +9,7 @@ namespace WorkShop.Models
 {
     public interface IPlayerModelObserver : IModelObserver
     {
-        PlayerControlState ControlState { get; }
+        event Action<PlayerControlState> OnControlStateChanged;
 
     }
 
@@ -29,6 +29,11 @@ namespace WorkShop.Models
     
         }
 
-        public PlayerControlState ControlState { get; set; }
+        public event Action<PlayerControlState> OnControlStateChanged;
+
+        public PlayerControlState ControlState
+        {
+            set => OnControlStateChanged?.Invoke(value);
+        }
     }
 }
