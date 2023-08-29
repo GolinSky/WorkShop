@@ -3,7 +3,6 @@ using WorkShop.Commands.Player;
 using WorkShop.LightWeightFramework;
 using WorkShop.Models;
 using WorkShop.Models.TransformModels;
-using WorkShop.MonoProviders;
 using WorkShop.Services.Player;
 
 namespace WorkShop.Views

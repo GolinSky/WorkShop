@@ -26,7 +26,6 @@ namespace WorkShop.Models
             base.OnInit();
             AddInnerModel(transformModel);
             AddInnerModel(animationModel);
-    
         }
 
         public event Action<PlayerControlState> OnControlStateChanged;

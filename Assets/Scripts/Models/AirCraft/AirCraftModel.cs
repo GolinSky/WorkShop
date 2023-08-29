@@ -1,13 +1,17 @@
+using System;
 using LightWeightFramework.Model;
 using UnityEngine;
 using WorkShop.Models.TransformModels;
+using WorkShop.Services.Player;
 
 namespace WorkShop.Models.AirCraft
 {
     public interface IAirCraftModelObserver:IModelObserver
     {
+        event Action<PlayerControlState> OnControlStateChanged;
+
         float Throttle { get; }
-        bool AirBrakes { get; }
+
     }
     
     [CreateAssetMenu(fileName = "AirCraftModel", menuName = "Models/AirCraftModel")]
@@ -15,6 +19,7 @@ namespace WorkShop.Models.AirCraft
     {
         [SerializeField] private TransformModel transformModel;
 
+        public float Throttle { get; set; }
 
         protected override void OnInit()
         {
@@ -22,7 +27,12 @@ namespace WorkShop.Models.AirCraft
             AddInnerModel(transformModel);
         }
 
-        public float Throttle { get; set; }
-        public bool AirBrakes { get; set; }
+        public event Action<PlayerControlState> OnControlStateChanged;
+
+        public PlayerControlState ControlState
+        {
+            set => OnControlStateChanged?.Invoke(value);
+        }
+
     }
 }

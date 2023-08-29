@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -4283824283263733814}
   - component: {fileID: 6913616822998578648}
   - component: {fileID: 6267094866687547723}
+  - component: {fileID: 1439506972789031586}
   m_Layer: 6
   m_Name: AirCraftView
   m_TagString: Untagged
@@ -50,9 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewComponents: []
   playerSitTransform: {fileID: 9096293356605883845}
-  rigidbody: {fileID: 6913616822998578648}
-  speed: 10
-  rotationSpeed: 0
+  airCraftMonoBehaviour: {fileID: 1439506972789031586}
 --- !u!54 &6913616822998578648
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -76,7 +75,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -101,6 +100,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.9167404, y: 1.05957, z: 9.976934}
   m_Center: {x: 0.03096199, y: 0.10231501, z: 1.0189457}
+--- !u!114 &1439506972789031586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131336919638177205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6f1a64bbc310284eb925db96b5c085d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody: {fileID: 6913616822998578648}
+  power: 10
+  rotSpeed: 44
 --- !u!1 &4139826831762130135
 GameObject:
   m_ObjectHideFlags: 0

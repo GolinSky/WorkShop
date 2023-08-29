@@ -36,18 +36,30 @@ namespace WorkShop.Controllers.AirCraft
             base.OnBeforeComponentsInitialed();
             inputModel = GameObserver.ModelHub.GetModel<IInputModelObserver>();
         }
-        
+
         protected override void OnInit()
         {
             base.OnInit();
             playerControlService = GetService<IPlayerControlService>();
             interactionService = GetService<IInteractionService>();
             vehicleTransformService = GetService<IVehicleTransformService>();
+            UpdateControlState(playerControlService.CurrentState);
+            playerControlService.OnControlStateChanged += UpdateControlState;
+        }
+
+        protected override void OnRelease()
+        {
+            base.OnRelease();
+            playerControlService.OnControlStateChanged -= UpdateControlState;
+        }
+
+        private void UpdateControlState(PlayerControlState controlState)
+        {
+            Model.ControlState = controlState;
         }
 
         public void Notify(float state)
         {
-
             if (playerControlService.CurrentState != PlayerControlState.AirCraft)
             {
                 return;
@@ -57,8 +69,7 @@ namespace WorkShop.Controllers.AirCraft
             
             direction.x = ClampToOne(inputModel.Move.x);
             direction.z = ClampToOne(inputModel.Move.y);
-            Model.AirBrakes = false;
-            Model.Throttle = UnityEngine.Input.GetKey(KeyCode.Space)? 1 : 0;
+            Model.Throttle = inputModel.Jump? 1 : 0;
             transformModel.UpdateDirection(direction);
         }
         

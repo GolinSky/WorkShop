@@ -8,6 +8,7 @@ namespace WorkShop.Services.Player
     {
         ThirdPerson = 0,
         AirCraft = 1,
+        Swimming = 2,
     }
 
     public interface IPlayerControlService: IService
